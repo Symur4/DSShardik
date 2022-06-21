@@ -15,4 +15,5 @@ MonoBehaviour:
   Prefab: {fileID: -1671280838306658577, guid: 3c26394c013b8e343b3f3b105fea5e0d, type: 3}
   BlankMaterial: {fileID: 2100000, guid: 14dc1264f6e563e4f9b3d5ee489c48b9, type: 2}
   TileMaterail: {fileID: 2100000, guid: 41df8bd979bef8e479b7d70281bb8b93, type: 2}
+  SelectedMaterial: {fileID: 2100000, guid: 15a2ee71da7728b448711ad722efba46, type: 2}
   TileType: 2

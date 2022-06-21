@@ -17,6 +17,8 @@ namespace Assets._Scripts.Scriptables
 
         public Material TileMaterail;
 
+        public Material SelectedMaterial;
+
         public TileType TileType;
 
     }

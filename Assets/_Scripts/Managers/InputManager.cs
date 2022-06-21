@@ -12,6 +12,7 @@ namespace Assets._Scripts.Managers
     public class InputManager : Singleton<InputManager>
     {
         public event Action<Vector3> OnRightMouseClicked;
+        public event Action<Vector3> OnLeftMouseClicked;
 
         private void Update()
         {
@@ -25,6 +26,14 @@ namespace Assets._Scripts.Managers
                 if (!EventSystem.current.IsPointerOverGameObject())
                 {
                     OnRightMouseClicked?.Invoke(Input.mousePosition);
+                }
+            }
+
+            if (Input.GetMouseButtonDown(0))
+            {
+                if (!EventSystem.current.IsPointerOverGameObject())
+                {
+                    OnLeftMouseClicked?.Invoke(Input.mousePosition);
                 }
             }
         }

@@ -23,13 +23,24 @@ namespace Assets._Scripts.Managers
             }
 
             InputManager.Instance.OnRightMouseClicked += OnRightMouseClicked;
+            InputManager.Instance.OnLeftMouseClicked += OnLeftMouseCliecked;
+        }
+
+        private void OnLeftMouseCliecked(Vector3 position)
+        {
+            var hex = GetHexInPosition(position);            
+
+            if (hex == null)
+            {
+                return;
+            }
+
+            MapManager.Instance.SelectTile(hex.TileData);
         }
 
         private void OnRightMouseClicked(Vector3 position)
         {
             var hex = GetHexInPosition(position);
-
-            Debug.Log(hex.TileData);
 
             if (hex == null)
             {
@@ -39,13 +50,13 @@ namespace Assets._Scripts.Managers
             MapManager.Instance.ExploreTile(hex.TileData);
         }
 
-        private TileBase GetHexInPosition(Vector3 mousePosition)
+        private MapTile GetHexInPosition(Vector3 mousePosition)
         {
             RaycastHit hit;
             Ray ray = _mainCamera.ScreenPointToRay(mousePosition);
             if (Physics.Raycast(ray, out hit))
             {
-                return hit.collider.gameObject.GetComponent<TileBase>();
+                return hit.collider.gameObject.GetComponent<MapTile>();
             }
 
             return null;

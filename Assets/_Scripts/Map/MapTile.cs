@@ -1,4 +1,5 @@
-﻿using Assets.Scripts.Core.Map;
+﻿using Assets.Scripts.Core;
+using Assets.Scripts.Core.Map;
 using Assets.Scripts.UI;
 using System;
 using System.Collections.Generic;
@@ -9,11 +10,13 @@ using UnityEngine;
 
 namespace Assets._Scripts.Map
 {
-    public class TileBase : MonoBehaviour
+    public class MapTile : MonoBehaviour
     {
         [SerializeField]
         private GameObject ProgressBar;
 
+        private bool _isSelected = false;
+        private Material _tempMaterial;
         private MeshRenderer _meshRenderer;
         private float _exploreCurrentProgress;
         private bool _isExploring;
@@ -23,6 +26,8 @@ namespace Assets._Scripts.Map
         public Material OriginalMaterial { private get; set; }
 
         public Tile TileData { get; set; }
+        public bool IsSelected => _isSelected;
+
 
         private void Awake()
         {
@@ -35,6 +40,25 @@ namespace Assets._Scripts.Map
         public void SetMaterial(Material material)
         {
             _meshRenderer.material = material;
+        }
+
+        public void Select()
+        {
+            _isSelected = true;
+            _tempMaterial = _meshRenderer.material;
+            _meshRenderer.material = ResourceCore
+                .Instance
+                .Tiles
+                .Where(w => w.TileType == TileData.TileType)
+                .FirstOrDefault()
+                .SelectedMaterial
+                ;            
+        }
+
+        public void ClearSelect()
+        {
+            _isSelected = false;
+            _meshRenderer.material = _tempMaterial;
         }
 
         public void StartExplore(Action<Tile> onExploreFinished, float exploreLength)

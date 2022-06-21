@@ -18,7 +18,7 @@ namespace Assets.Scripts.Managers
         private float _yOffset = 1;
         private float _zOffset = 1.73f;
         private int _exploredTileCount = 1;
-        List<TileBase> _tileMap = new List<TileBase>();
+        List<MapTile> _tileMap = new List<MapTile>();
 
 
         public void GenerateMap()
@@ -43,6 +43,21 @@ namespace Assets.Scripts.Managers
             }
         }
 
+        public void SelectTile(Tile tile)
+        {
+            foreach(var t in _tileMap.Where(w => w.IsSelected))
+            {
+                t.ClearSelect();
+            }
+
+            var tileBase = _tileMap.Where(w => w.TileData.Hex.q == tile.Hex.q
+                                       && w.TileData.Hex.r == tile.Hex.r)
+                       .FirstOrDefault();
+
+            tileBase.Select();
+
+        }
+
         public void ExploreTile(Tile tile)
         {
             if (tile.IsExplored == false)
@@ -64,9 +79,9 @@ namespace Assets.Scripts.Managers
             }
         }
 
-        List<TileBase> FindTilesByHex(List<Hex> hexes)
+        List<MapTile> FindTilesByHex(List<Hex> hexes)
         {
-            var result = new List<TileBase>();
+            var result = new List<MapTile>();
 
             foreach (var h in hexes)
             {
@@ -96,7 +111,7 @@ namespace Assets.Scripts.Managers
                             col * _zOffset);
 
             var spawned = Instantiate(tileResource.Prefab, pos, Quaternion.identity, transform);
-            var tileBase = spawned.GetComponent<TileBase>();
+            var tileBase = spawned.GetComponent<MapTile>();
             tileBase.OriginalMaterial = tileResource.TileMaterail;
             _tileMap.Add(tileBase);
             if (tile.IsExplored)
