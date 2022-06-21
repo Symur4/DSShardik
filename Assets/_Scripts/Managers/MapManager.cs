@@ -47,13 +47,40 @@ namespace Assets.Scripts.Managers
         {
             if (tile.IsExplored == false)
             {
-                var tileResource = ResourceCore.Instance.Tiles.Where(w => w.TileType == tile.TileType).FirstOrDefault();
-                var tileBase = _tileMap.Where(w => w.TileData.Hex.q == tile.Hex.q
-                                    && w.TileData.Hex.r == tile.Hex.r)
+                var neighbours = _hexMap.GetNeighbours(tile.Hex, 1, 1);
+
+                var neighbourTiles = FindTilesByHex(neighbours);
+
+                if (neighbourTiles.Where(w => w.TileData.IsExplored).Count() > 0)
+                {
+
+                    var tileResource = ResourceCore.Instance.Tiles.Where(w => w.TileType == tile.TileType).FirstOrDefault();
+                    var tileBase = _tileMap.Where(w => w.TileData.Hex.q == tile.Hex.q
+                                        && w.TileData.Hex.r == tile.Hex.r)
+                        .FirstOrDefault();
+
+                    tileBase.StartExplore(null, _exploredTileCount++);
+                }
+            }
+        }
+
+        List<TileBase> FindTilesByHex(List<Hex> hexes)
+        {
+            var result = new List<TileBase>();
+
+            foreach (var h in hexes)
+            {
+                var tileBase = _tileMap.Where(w => w.TileData.Hex.q == h.q
+                                    && w.TileData.Hex.r == h.r)
                     .FirstOrDefault();
 
-                tileBase.StartExplore(null, _exploredTileCount++);
+                if(tileBase != null)
+                {
+                    result.Add(tileBase);
+                }
             }
+
+            return result;
         }
 
         void DrawTile(Tile tile)

@@ -68,6 +68,7 @@ namespace Assets._Scripts.Map
             
             _meshRenderer.material = OriginalMaterial;
             _isExploring = false;
+            TileData.IsExplored = true;
             _progressBar.SetVisibility(false);
             CancelInvoke("ScanFinished");
             if (_onExploreFinishedAction != null)
