@@ -52,7 +52,9 @@ namespace Assets._Scripts.Map
                 .Where(w => w.TileType == TileData.TileType)
                 .FirstOrDefault()
                 .SelectedMaterial
-                ;            
+                ;
+
+            
         }
 
         public void ClearSelect()

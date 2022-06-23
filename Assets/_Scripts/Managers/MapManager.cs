@@ -14,9 +14,7 @@ namespace Assets.Scripts.Managers
     public class MapManager : Singleton<MapManager>
     {
         HexMap _hexMap;
-        private float _xOffset = 2;
-        private float _yOffset = 1;
-        private float _zOffset = 1.73f;
+        private float _size = 1.15333f;
         private int _exploredTileCount = 1;
         List<MapTile> _tileMap = new List<MapTile>();
 
@@ -24,7 +22,7 @@ namespace Assets.Scripts.Managers
         public void GenerateMap()
         {
             _hexMap = new HexMap();
-            _hexMap.GenerateHexes(20);
+            _hexMap.GenerateHexes(10);
             _hexMap.FindTile(0, 0, 0).IsExplored = true;
             _hexMap.AddNoise(100);
             _hexMap.SetTileTypes(new List<BiomLimit> {
@@ -55,6 +53,19 @@ namespace Assets.Scripts.Managers
                        .FirstOrDefault();
 
             tileBase.Select();
+
+            Debug.Log(string.Format("q:{0} r:{1}", tileBase.TileData.Hex.q, tileBase.TileData.Hex.r));
+
+            var neighbours = _hexMap.GetNeighbours(tile.Hex, 1, 1);
+            var neighbourTiles = FindTilesByHex(neighbours);
+            foreach (var n in neighbourTiles)
+            {
+                var tb = _tileMap.Where(w => w.TileData.Hex.q == n.TileData.Hex.q
+                                        && w.TileData.Hex.r == n.TileData.Hex.r)
+                        .FirstOrDefault();
+
+                tb.Select();
+            }
 
         }
 
@@ -102,13 +113,12 @@ namespace Assets.Scripts.Managers
         {
             var tileResource = ResourceCore.Instance.Tiles.Where(w => w.TileType == tile.TileType).FirstOrDefault();
 
-            var col = tile.Hex.q + (tile.Hex.r - (tile.Hex.r & 1)) / 2;
-            var row = tile.Hex.r;
-            var height = 0f;
-            int correction = col % 2 == 0 ? 1 : 0;
-            var pos = new Vector3((row) * _xOffset - correction,
-                            height,
-                            col * _zOffset);
+            var x = _size * (Mathf.Sqrt(3) * tile.Hex.q + Mathf.Sqrt(3) / 2f * tile.Hex.r);
+            var y = _size * (3f/2f * tile.Hex.r);
+
+            var pos = new Vector3(x,
+                            0f,
+                            y);
 
             var spawned = Instantiate(tileResource.Prefab, pos, Quaternion.identity, transform);
             var tileBase = spawned.GetComponent<MapTile>();
