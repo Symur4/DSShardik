@@ -19,6 +19,11 @@ namespace Assets.Scripts.Core.Map
         public List<Hex> Hexes => _map.Select(s => s.Hex).ToList();
         public List<Tile> Tiles => _map;
 
+        public void SetTiles(List<Tile> tiles)
+        {
+            _map = tiles;
+        }
+
         public void GenerateHexes(int radius)
         {
             for (int q = -radius; q <= radius; q++)
@@ -31,7 +36,8 @@ namespace Assets.Scripts.Core.Map
                     {
                         Hex = new Hex(q, r),
                         IsExplored = false,
-                        TileType = TypeConstants.TileType.Grass
+                        TileType = TypeConstants.TileType.Grass,
+                        ExploreProgress = 0f,
                     };
                     _map.Add(t);
                 }

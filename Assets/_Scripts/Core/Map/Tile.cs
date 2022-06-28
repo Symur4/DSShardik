@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace Assets.Scripts.Core.Map
 {
+    [Serializable]
     public class Tile
     {
         public Hex Hex;
@@ -14,5 +15,7 @@ namespace Assets.Scripts.Core.Map
         public TileType TileType;
         public ResourceType ResourceType;
         public bool IsExplored;
+        public float ExploreProgress;
+
     }
 }

@@ -13,15 +13,23 @@ namespace Assets.Scripts.Managers
 {
     public class MapManager : Singleton<MapManager>
     {
-        HexMap _hexMap;
+        public List<Tile> Tiles => _tileMap.Select(s => s.TileData).ToList();
+
+        HexMap _hexMap = new HexMap();
         private float _size = 1.15333f;
         private int _exploredTileCount = 1;
         List<MapTile> _tileMap = new List<MapTile>();
 
 
+
+        public void GenerateMap(List<Tile> tiles)
+        {
+            _hexMap.SetTiles(tiles);
+
+        }
+
         public void GenerateMap()
         {
-            _hexMap = new HexMap();
             _hexMap.GenerateHexes(10);
             _hexMap.FindTile(0, 0, 0).IsExplored = true;
             _hexMap.AddNoise(100);
@@ -35,15 +43,18 @@ namespace Assets.Scripts.Managers
 
         public void ShowHexes()
         {
+            _exploredTileCount = _hexMap.Tiles.Where(w => w.IsExplored).Count();
             foreach (var tile in _hexMap.Tiles)
             {
                 DrawTile(tile);
             }
+
+            
         }
 
         public void SelectTile(Tile tile)
         {
-            foreach(var t in _tileMap.Where(w => w.IsSelected))
+            foreach (var t in _tileMap.Where(w => w.IsSelected))
             {
                 t.ClearSelect();
             }
@@ -56,17 +67,23 @@ namespace Assets.Scripts.Managers
 
             Debug.Log(string.Format("q:{0} r:{1}", tileBase.TileData.Hex.q, tileBase.TileData.Hex.r));
 
-            var neighbours = _hexMap.GetNeighbours(tile.Hex, 1, 1);
-            var neighbourTiles = FindTilesByHex(neighbours);
-            foreach (var n in neighbourTiles)
-            {
-                var tb = _tileMap.Where(w => w.TileData.Hex.q == n.TileData.Hex.q
-                                        && w.TileData.Hex.r == n.TileData.Hex.r)
-                        .FirstOrDefault();
+            //var neighbours = _hexMap.GetNeighbours(tile.Hex, 1, 1);
+            //var neighbourTiles = FindTilesByHex(neighbours);
+            //foreach (var n in neighbourTiles)
+            //{
+            //    var tb = _tileMap.Where(w => w.TileData.Hex.q == n.TileData.Hex.q
+            //                            && w.TileData.Hex.r == n.TileData.Hex.r)
+            //            .FirstOrDefault();
 
-                tb.Select();
-            }
+            //    tb.Select();
+            //}
+        }
 
+        public MapTile FindTile(int q, int r) 
+        {
+            return _tileMap.Where(w => w.TileData.Hex.q == q
+                                && w.TileData.Hex.r == r)
+                       .FirstOrDefault();
         }
 
         public void ExploreTile(Tile tile)
@@ -77,7 +94,9 @@ namespace Assets.Scripts.Managers
 
                 var neighbourTiles = FindTilesByHex(neighbours);
 
-                if (neighbourTiles.Where(w => w.TileData.IsExplored).Count() > 0)
+                if (tile.ExploreProgress > 0f
+                    || neighbourTiles.Where(w => w.TileData.IsExplored).Count() > 0
+                    )
                 {
 
                     var tileResource = ResourceCore.Instance.Tiles.Where(w => w.TileType == tile.TileType).FirstOrDefault();
@@ -107,7 +126,7 @@ namespace Assets.Scripts.Managers
             }
 
             return result;
-        }
+        }        
 
         void DrawTile(Tile tile)
         {
@@ -133,7 +152,14 @@ namespace Assets.Scripts.Managers
             }
 
             tileBase.TileData = tile;
+
+            if(tile.IsExplored == false && tile.ExploreProgress != 0f)
+            {
+                ExploreTile(tile);
+            }
         }
+
+
          
     }
 }

@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace Assets.Scripts.Core.Map
 {
+    [Serializable]
     public class Hex
     {
         public int q;

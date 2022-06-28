@@ -12,6 +12,7 @@ namespace Assets.Scripts.Core
     public class ResourceCore : Singleton<ResourceCore>
     {
         public List<ScriptableTile> Tiles { get; private set; }
+        public List<ScriptableBuilding> Buildings { get; private set; }
 
         protected void Awake()
         {            
@@ -21,6 +22,7 @@ namespace Assets.Scripts.Core
         private void AssembleResources()
         {
             Tiles = Resources.LoadAll<ScriptableTile>("Tiles").ToList();
+            Buildings = Resources.LoadAll<ScriptableBuilding>("Buildings").ToList();
         }
     }
 }

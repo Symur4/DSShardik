@@ -18,7 +18,6 @@ namespace Assets._Scripts.Map
         private bool _isSelected = false;
         private Material _tempMaterial;
         private MeshRenderer _meshRenderer;
-        private float _exploreCurrentProgress;
         private bool _isExploring;
         private Action<Tile> _onExploreFinishedAction;
         private float _exploreLenght = 5f;
@@ -66,13 +65,13 @@ namespace Assets._Scripts.Map
         public void StartExplore(Action<Tile> onExploreFinished, float exploreLength)
         {
             _exploreLenght = exploreLength;
-            _exploreCurrentProgress = 0f;
+            //TileData.ExploreProgress = 0f;
             _isExploring = true;
             _onExploreFinishedAction = onExploreFinished;
 
             InvokeRepeating("ExploreProgress", 1f, 1f);
 
-            _progressBar.SetProgressValues(_exploreLenght, _exploreCurrentProgress);
+            _progressBar.SetProgressValues(_exploreLenght, TileData.ExploreProgress);
             _progressBar.SetVisibility(true);
         }
 
@@ -80,9 +79,9 @@ namespace Assets._Scripts.Map
         {
             if (_isExploring)
             {
-                _progressBar.SetProgressValues(_exploreLenght, _exploreCurrentProgress);
-                _exploreCurrentProgress += 1f;
-                if (_exploreCurrentProgress == _exploreLenght)
+                _progressBar.SetProgressValues(_exploreLenght, TileData.ExploreProgress);
+                TileData.ExploreProgress += 1f;                
+                if (TileData.ExploreProgress >= _exploreLenght)
                 {
                    ExploreFinished();
                 }
@@ -93,13 +92,15 @@ namespace Assets._Scripts.Map
         {
             
             _meshRenderer.material = OriginalMaterial;
+            _tempMaterial = OriginalMaterial;
             _isExploring = false;
             TileData.IsExplored = true;
+            TileData.ExploreProgress = 0f;
             _progressBar.SetVisibility(false);
             CancelInvoke("ScanFinished");
             if (_onExploreFinishedAction != null)
             {
-                _onExploreFinishedAction.Invoke(TileData);
+                _onExploreFinishedAction.Invoke(TileData);                
             }
 
             
