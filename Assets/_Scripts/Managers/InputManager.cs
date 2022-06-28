@@ -1,4 +1,5 @@
 ﻿using Assets.Scripts.Core;
+using Assets.Scripts.Managers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,6 +18,32 @@ namespace Assets._Scripts.Managers
         private void Update()
         {
             DetectMouseClick();
+            DetectKeyboardDown();
+        }
+
+        private void DetectKeyboardDown()
+        {
+            //if (Input.GetKeyDown(KeyCode.B))
+            //{
+            //    OnKeyDown?.Invoke("B");
+            //}
+
+            //if (Input.GetKeyDown(KeyCode.R))
+            //{
+            //    UIManager.Instance.ToggleResourcePanel();
+            //}
+
+            //if (Input.GetKeyDown(KeyCode.S))
+            //{
+            //    GameManager.Instance.SaveGame();
+            //}
+
+            if (Input.GetKeyDown(KeyCode.X))
+            {
+                GameManager.Instance.Init();                
+            }
+
+
         }
 
         private void DetectMouseClick()

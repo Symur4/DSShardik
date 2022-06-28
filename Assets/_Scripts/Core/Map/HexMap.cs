@@ -26,6 +26,7 @@ namespace Assets.Scripts.Core.Map
 
         public void GenerateHexes(int radius)
         {
+            _map = new List<Tile>();
             for (int q = -radius; q <= radius; q++)
             {
                 int r1 = Math.Max(-radius, -q - radius);

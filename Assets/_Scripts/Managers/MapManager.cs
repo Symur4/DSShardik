@@ -15,12 +15,16 @@ namespace Assets.Scripts.Managers
     {
         public List<Tile> Tiles => _tileMap.Select(s => s.TileData).ToList();
 
-        HexMap _hexMap = new HexMap();
+        private HexMap _hexMap = new HexMap();
+        private Transform _tileMapContainer;
         private float _size = 1.15333f;
         private int _exploredTileCount = 1;
-        List<MapTile> _tileMap = new List<MapTile>();
+        private List<MapTile> _tileMap = new List<MapTile>();
 
-
+        private void Awake()
+        {            
+            _tileMapContainer = GameObject.Find("Tiles").transform;
+        }
 
         public void GenerateMap(List<Tile> tiles)
         {
@@ -28,18 +32,19 @@ namespace Assets.Scripts.Managers
 
         }
 
-        public void GenerateMap()
+        public void GenerateMap(int seed, int dimension)
         {
-            _hexMap.GenerateHexes(10);
+            ClearTiles();
+            _hexMap.GenerateHexes(dimension);
             _hexMap.FindTile(0, 0, 0).IsExplored = true;
-            _hexMap.AddNoise(100);
+            _hexMap.AddNoise(seed);
             _hexMap.SetTileTypes(new List<BiomLimit> {
                 new BiomLimit() { Start=0, End=20, TileType = TileType.Water },
                 new BiomLimit() { Start=20, End=40, TileType = TileType.Desert },
                 new BiomLimit() { Start=40, End=70, TileType = TileType.Grass },
                 new BiomLimit() { Start=70, End=200, TileType = TileType.Mountain },
             });
-        }
+        }        
 
         public void ShowHexes()
         {
@@ -139,7 +144,9 @@ namespace Assets.Scripts.Managers
                             0f,
                             y);
 
-            var spawned = Instantiate(tileResource.Prefab, pos, Quaternion.identity, transform);
+            var spawned = Instantiate(tileResource.Prefab, pos, Quaternion.identity, _tileMapContainer);
+            //spawned.transform.parent = _tileMapContainer;
+
             var tileBase = spawned.GetComponent<MapTile>();
             tileBase.OriginalMaterial = tileResource.TileMaterail;
             _tileMap.Add(tileBase);
@@ -158,8 +165,17 @@ namespace Assets.Scripts.Managers
                 ExploreTile(tile);
             }
         }
+        public void ClearTiles()
+        {
+            _tileMap = new List<MapTile>();
+            foreach (Transform child in _tileMapContainer)
+            {
+                GameObject.Destroy(child.gameObject);
+            }
+
+        }
 
 
-         
+
     }
 }

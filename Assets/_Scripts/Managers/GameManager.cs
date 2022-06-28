@@ -13,7 +13,7 @@ namespace Assets.Scripts.Managers
 {
     public class GameManager : Singleton<GameManager>
     {
-
+        private GameParams _gameParams;
         private void Start()
         {
 
@@ -21,11 +21,11 @@ namespace Assets.Scripts.Managers
 
             if (gameData == null)
             {
-                MapManager.Instance.GenerateMap();
-                MapManager.Instance.ShowHexes();
+                Init();   
             }
             else
             {
+                _gameParams = gameData.GameParams;
                 MapManager.Instance.GenerateMap(gameData.Tiles);
                 MapManager.Instance.ShowHexes();                
             }
@@ -41,6 +41,17 @@ namespace Assets.Scripts.Managers
         {
             SaveGame();
         }
+
+        public void Init()
+        {
+            _gameParams = new GameParams();
+            _gameParams.Seed = UnityEngine.Random.Range(10000, 100000);
+            _gameParams.Dimension = 10;
+            MapManager.Instance.GenerateMap(_gameParams.Seed, _gameParams.Dimension);
+            MapManager.Instance.ShowHexes();
+
+        }
+
 
         private void SaveGame()
         {
