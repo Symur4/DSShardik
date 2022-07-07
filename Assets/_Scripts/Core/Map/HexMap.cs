@@ -37,6 +37,7 @@ namespace Assets.Scripts.Core.Map
                     {
                         Hex = new Hex(q, r),
                         IsExplored = false,
+                        HasEnergy = false,
                         TileType = TypeConstants.TileType.Grass,
                         ExploreProgress = 0f,
                     };

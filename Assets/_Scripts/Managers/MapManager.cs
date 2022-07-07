@@ -15,11 +15,14 @@ namespace Assets.Scripts.Managers
     {
         public List<Tile> Tiles => _tileMap.Select(s => s.TileData).ToList();
 
+        public MapTile SelectedTile => _selectedTile;
+
         private HexMap _hexMap = new HexMap();
         private Transform _tileMapContainer;
         private float _size = 1.15333f;
         private int _exploredTileCount = 1;
         private List<MapTile> _tileMap = new List<MapTile>();
+        private MapTile _selectedTile = null;
 
         private void Awake()
         {            
@@ -69,20 +72,10 @@ namespace Assets.Scripts.Managers
                        .FirstOrDefault();
 
             tileBase.Select();
+            _selectedTile = tileBase;
 
-            Debug.Log(string.Format("q:{0} r:{1}", tileBase.TileData.Hex.q, tileBase.TileData.Hex.r));
-
-            //var neighbours = _hexMap.GetNeighbours(tile.Hex, 1, 1);
-            //var neighbourTiles = FindTilesByHex(neighbours);
-            //foreach (var n in neighbourTiles)
-            //{
-            //    var tb = _tileMap.Where(w => w.TileData.Hex.q == n.TileData.Hex.q
-            //                            && w.TileData.Hex.r == n.TileData.Hex.r)
-            //            .FirstOrDefault();
-
-            //    tb.Select();
-            //}
-        }
+            Debug.Log(string.Format("q:{0} r:{1}", tileBase.TileData.Hex.q, tileBase.TileData.Hex.r));            
+        }        
 
         public MapTile FindTile(int q, int r) 
         {

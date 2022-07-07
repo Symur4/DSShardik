@@ -16,6 +16,7 @@ namespace Assets.Scripts.Core.Map
         public ResourceType ResourceType;
         public bool IsExplored;
         public float ExploreProgress;
+        public bool HasEnergy;
 
     }
 }

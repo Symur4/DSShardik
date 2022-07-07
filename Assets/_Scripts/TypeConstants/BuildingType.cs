@@ -14,6 +14,7 @@ namespace Assets._Scripts.TypeConstants
         ,SolarPanel
         ,Generator
         ,Smelter
+        ,Pylon
 
     }
 }
