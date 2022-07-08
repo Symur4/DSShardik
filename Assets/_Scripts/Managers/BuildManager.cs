@@ -36,7 +36,10 @@ namespace Assets._Scripts.Managers
                 ,Quaternion.identity
                 ,container);
 
-
+            if(buildingType== BuildingType.Pylon )
+            {
+                tile.TileData.HasEnergy = true;
+            }
         }
     }
 }

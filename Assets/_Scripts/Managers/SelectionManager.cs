@@ -36,7 +36,7 @@ namespace Assets._Scripts.Managers
             }
 
             MapManager.Instance.SelectTile(hex.TileData);
-            UIManager.Instance.ShowBuildPanel();
+            
         }
 
         private void OnRightMouseClicked(Vector3 position)

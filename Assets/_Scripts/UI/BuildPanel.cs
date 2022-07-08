@@ -35,7 +35,8 @@ namespace Assets._Scripts.UI
             }
 
             if(tile.IsExplored
-                && tile.HasEnergy == false)
+                && tile.HasEnergy == false
+                && MapManager.Instance.HasEnergyInNeighbour(tile))
             {
                 _buildButtons.Where(w => w.BuildingType == TypeConstants.BuildingType.Pylon)
                     .ToList()

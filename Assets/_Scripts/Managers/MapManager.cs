@@ -1,4 +1,5 @@
-﻿using Assets._Scripts.Map;
+﻿using Assets._Scripts.Managers;
+using Assets._Scripts.Map;
 using Assets.Scripts.Core;
 using Assets.Scripts.Core.Map;
 using Assets.Scripts.TypeConstants;
@@ -70,9 +71,22 @@ namespace Assets.Scripts.Managers
             var tileBase = _tileMap.Where(w => w.TileData.Hex.q == tile.Hex.q
                                        && w.TileData.Hex.r == tile.Hex.r)
                        .FirstOrDefault();
+            if (_selectedTile == null
+                || _selectedTile.TileData.Hex != tileBase.TileData.Hex)
+            {
+                tileBase.Select();
+                _selectedTile = tileBase;
 
-            tileBase.Select();
-            _selectedTile = tileBase;
+                UIManager.Instance.ShowBuildPanel();
+            }
+            else { 
+                tileBase.ClearSelect();
+                _selectedTile = null;
+
+                UIManager.Instance.HideBuildPanel();
+            }
+            
+
 
             Debug.Log(string.Format("q:{0} r:{1}", tileBase.TileData.Hex.q, tileBase.TileData.Hex.r));            
         }        
@@ -105,6 +119,15 @@ namespace Assets.Scripts.Managers
                     tileBase.StartExplore(null, _exploredTileCount++);
                 }
             }
+        }
+
+        public bool HasEnergyInNeighbour(Tile tile)
+        {
+            var neighbours = _hexMap.GetNeighbours(tile.Hex, 1, 1);
+            var neighbourTiles = FindTilesByHex(neighbours);
+
+            return neighbourTiles.Where(w => w.TileData.HasEnergy).Count() > 0
+                    || neighbours.Where(w => w.q == 0 && w.r == 0).Count() > 0 ;
         }
 
         List<MapTile> FindTilesByHex(List<Hex> hexes)
@@ -156,6 +179,12 @@ namespace Assets.Scripts.Managers
             if(tile.IsExplored == false && tile.ExploreProgress != 0f)
             {
                 ExploreTile(tile);
+            }
+
+            if(tile.HasEnergy)
+            {
+                BuildManager.Instance.StartBuilding(_Scripts.TypeConstants.BuildingType.Pylon
+                    , tileBase);
             }
         }
         public void ClearTiles()
