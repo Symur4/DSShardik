@@ -13,6 +13,7 @@ namespace Assets.Scripts.Core
     {
         public List<ScriptableTile> Tiles { get; private set; }
         public List<ScriptableBuilding> Buildings { get; private set; }
+        public List<ScriptableResource> ResourceList { get; private set; }
 
         protected void Awake()
         {            
@@ -23,6 +24,7 @@ namespace Assets.Scripts.Core
         {
             Tiles = Resources.LoadAll<ScriptableTile>("Tiles").ToList();
             Buildings = Resources.LoadAll<ScriptableBuilding>("Buildings").ToList();
+            ResourceList = Resources.LoadAll<ScriptableResource>("Resource").ToList();
         }
     }
 }

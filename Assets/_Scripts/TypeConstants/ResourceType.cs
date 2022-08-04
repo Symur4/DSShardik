@@ -14,5 +14,6 @@ namespace Assets.Scripts.TypeConstants
         IronOre,
         IronBar,
         Concrete,
+        Limestone,
     }
 }

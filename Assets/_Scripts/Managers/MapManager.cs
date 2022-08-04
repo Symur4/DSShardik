@@ -48,7 +48,22 @@ namespace Assets.Scripts.Managers
                 new BiomLimit() { Start=40, End=70, TileType = TileType.Grass },
                 new BiomLimit() { Start=70, End=200, TileType = TileType.Mountain },
             });
-        }        
+            GenerateResources();
+        }
+
+        private void GenerateResources()
+        {
+            //var tile = _hexMap.GetRandomHex();
+            var tile = _hexMap.GetRandomHexInRange(_hexMap.FindTile(0, 0,0).Hex, 2);
+            tile.ResourceType = ResourceType.Limestone;
+
+            for (int i = 0; i < 2; i++)
+            {
+                tile = _hexMap.GetRandomHexInRange(_hexMap.FindTile(0, 0, 0).Hex, 3);
+                tile.ResourceType = ResourceType.IronOre;
+            }
+
+        }
 
         public void ShowHexes()
         {
@@ -116,9 +131,14 @@ namespace Assets.Scripts.Managers
                                         && w.TileData.Hex.r == tile.Hex.r)
                         .FirstOrDefault();
 
-                    tileBase.StartExplore(null, _exploredTileCount++);
+                    tileBase.StartExplore(ExploreFinished, _exploredTileCount++);
                 }
             }
+        }
+
+        private void ExploreFinished(Tile tile)
+        {
+            
         }
 
         public bool HasEnergyInNeighbour(Tile tile)
@@ -161,18 +181,24 @@ namespace Assets.Scripts.Managers
                             y);
 
             var spawned = Instantiate(tileResource.Prefab, pos, Quaternion.identity, _tileMapContainer);
-            //spawned.transform.parent = _tileMapContainer;
-
+            
             var tileBase = spawned.GetComponent<MapTile>();
             tileBase.OriginalMaterial = tileResource.TileMaterail;
             _tileMap.Add(tileBase);
             if (tile.IsExplored)
             {
                 tileBase.SetMaterial(tileResource.TileMaterail);
+
+                if (tile.ResourceType != ResourceType.None)
+                {
+                    tileBase.AddResource(tile.ResourceType);                    
+                }
             } else
             {
                 tileBase.SetMaterial(tileResource.BlankMaterial);
             }
+            tileBase.SetShader(tileResource.PylonShader);
+           
 
             tileBase.TileData = tile;
 
@@ -183,10 +209,15 @@ namespace Assets.Scripts.Managers
 
             if(tile.HasEnergy)
             {
-                BuildManager.Instance.StartBuilding(_Scripts.TypeConstants.BuildingType.Pylon
-                    , tileBase);
+                //BuildManager.Instance.StartBuilding(_Scripts.TypeConstants.BuildingType.Pylon
+                //    , tileBase);
+                tileBase.ApplyPylonShader();
+                
             }
+
+            
         }
+        
         public void ClearTiles()
         {
             _tileMap = new List<MapTile>();

@@ -16,4 +16,6 @@ MonoBehaviour:
   BlankMaterial: {fileID: 2100000, guid: 14dc1264f6e563e4f9b3d5ee489c48b9, type: 2}
   TileMaterail: {fileID: 2100000, guid: 274952c33dabc584a8f5c4c9c7d94581, type: 2}
   SelectedMaterial: {fileID: 2100000, guid: 15a2ee71da7728b448711ad722efba46, type: 2}
+  PylonShader: {fileID: -6465566751694194690, guid: ecd830e111f9ef6428e11299cba45991,
+    type: 3}
   TileType: 0

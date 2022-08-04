@@ -19,6 +19,9 @@ namespace Assets._Scripts.Scriptables
 
         public Material SelectedMaterial;
 
+        public Shader PylonShader;
+
+
         public TileType TileType;
 
     }

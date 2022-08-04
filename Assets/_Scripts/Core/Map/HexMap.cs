@@ -40,6 +40,7 @@ namespace Assets.Scripts.Core.Map
                         HasEnergy = false,
                         TileType = TypeConstants.TileType.Grass,
                         ExploreProgress = 0f,
+                        ResourceType = TypeConstants.ResourceType.None,
                     };
                     _map.Add(t);
                 }
@@ -119,6 +120,13 @@ namespace Assets.Scripts.Core.Map
         public Tile GetRandomHex()
         {
             return _map[random.Next(_map.Count())];
+        }
+
+        public Tile GetRandomHexInRange(Hex center, int range)
+        {
+            var tiles = GetNeighbours(center, 0, range);
+            var tile = tiles[random.Next(tiles.Count())];
+            return FindTile(tile.q, tile.r, 0);
         }
 
         Hex Subtract(Hex a, Hex b)

@@ -1,5 +1,6 @@
 ﻿using Assets.Scripts.Core;
 using Assets.Scripts.Core.Map;
+using Assets.Scripts.TypeConstants;
 using Assets.Scripts.UI;
 using System;
 using System.Collections.Generic;
@@ -23,6 +24,7 @@ namespace Assets._Scripts.Map
         private float _exploreLenght = 5f;
         private ProgressBar _progressBar;
         public Material OriginalMaterial { private get; set; }
+        private Shader _shader;
 
         public Tile TileData { get; set; }
         public bool IsSelected => _isSelected;
@@ -39,6 +41,18 @@ namespace Assets._Scripts.Map
         public void SetMaterial(Material material)
         {
             _meshRenderer.material = material;
+            //_meshRenderer.material.shader
+        }
+
+        public void SetShader(Shader shader)
+        {
+            _shader = shader;            
+        }
+
+        public void ApplyPylonShader()
+        {
+            _meshRenderer.material.shader = _shader;
+           // _meshRenderer.material.SetFloat()
         }
 
         public void Select()
@@ -51,9 +65,28 @@ namespace Assets._Scripts.Map
                 .Where(w => w.TileType == TileData.TileType)
                 .FirstOrDefault()
                 .SelectedMaterial
-                ;
+                ;            
+        }
 
-            
+        public void AddResource(ResourceType resourceType)
+        {
+            if(resourceType == ResourceType.None)
+            {
+                return;
+            }
+
+            var resourceResource = ResourceCore.Instance
+                                   .ResourceList
+                                   .Where(w => w.ResourceType == resourceType)
+                                   .FirstOrDefault();
+
+            var container = transform.Find("Props");
+
+            var spawnedResource = Instantiate(resourceResource.Prefab
+                , container.position
+                , Quaternion.identity
+                , container);
+
         }
 
         public void ClearSelect()
@@ -80,12 +113,12 @@ namespace Assets._Scripts.Map
             if (_isExploring)
             {
                 _progressBar.SetProgressValues(_exploreLenght, TileData.ExploreProgress);
-                TileData.ExploreProgress += 1f;                
+                TileData.ExploreProgress += 1f;
                 if (TileData.ExploreProgress >= _exploreLenght)
                 {
-                   ExploreFinished();
+                    ExploreFinished();
                 }
-            }
+            }     
         }
 
         private void ExploreFinished()
@@ -102,7 +135,7 @@ namespace Assets._Scripts.Map
             {
                 _onExploreFinishedAction.Invoke(TileData);                
             }
-
+            AddResource(TileData.ResourceType);
             
         }
     }
