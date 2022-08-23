@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
 
-namespace Assets._Scripts.Building
+namespace Assets._Scripts.Buildings
 {
     [Serializable]
     public class Building : EntityBase
@@ -15,5 +15,13 @@ namespace Assets._Scripts.Building
         [SerializeField]
         private BuildingType BuildingType;
 
+        private BuildingData _buildingData; 
+
+        public BuildingData BuildingData => _buildingData;
+
+        public void SetBuildingData(BuildingData buildingData)
+        {
+            _buildingData = buildingData;
+        }
     }
 }

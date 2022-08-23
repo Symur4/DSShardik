@@ -41,6 +41,7 @@ namespace Assets.Scripts.Managers
             ClearTiles();
             _hexMap.GenerateHexes(dimension);
             _hexMap.FindTile(0, 0, 0).IsExplored = true;
+            _hexMap.FindTile(0, 0, 0).HasEnergy = true;
             _hexMap.AddNoise(seed);
             _hexMap.SetTileTypes(new List<BiomLimit> {
                 new BiomLimit() { Start=0, End=20, TileType = TileType.Water },

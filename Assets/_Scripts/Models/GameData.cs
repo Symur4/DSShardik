@@ -1,4 +1,5 @@
-﻿using Assets.Scripts.Core.Map;
+﻿using Assets._Scripts.Buildings;
+using Assets.Scripts.Core.Map;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,6 +13,7 @@ namespace Assets._Scripts.Models
     {
         public GameParams GameParams;
         public List<Tile> Tiles;
+        public List<BuildingData> Buildings;
     
     }
 }

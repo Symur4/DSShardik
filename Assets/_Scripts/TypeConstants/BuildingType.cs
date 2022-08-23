@@ -11,6 +11,7 @@ namespace Assets._Scripts.TypeConstants
     {
         MainBase
         ,IronMine
+            ,SurfaceMiner
         ,SolarPanel
         ,Generator
         ,Smelter

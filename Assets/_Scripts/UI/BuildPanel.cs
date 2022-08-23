@@ -43,6 +43,17 @@ namespace Assets._Scripts.UI
                     .ForEach(b => b.gameObject.SetActive(true));
             }
 
+            if(tile.IsExplored
+                && tile.HasEnergy
+                && tile.ResourceType == Scripts.TypeConstants.ResourceType.Limestone)
+            {
+                _buildButtons.Where(w => w.BuildingType == TypeConstants.BuildingType.SurfaceMiner)
+                    .ToList()
+                    .ForEach(b => b.gameObject.SetActive(true));
+            }
+
+
+
 
         }
 

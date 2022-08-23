@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c3185fc93a43039409f131c9645a5d7b, type: 3}
-  m_Name: Pylon
+  m_Name: SurfaceMiner
   m_EditorClassIdentifier: 
-  Prefab: {fileID: 4336217851308881188, guid: 7e73f85ecad56e247b75bc809651ee44, type: 3}
-  BuildingType: 6
+  Prefab: {fileID: 7052837304624846521, guid: b0922bbcc8a58fe499ca551051b7f135, type: 3}
+  BuildingType: 2

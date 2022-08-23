@@ -27,7 +27,12 @@ namespace Assets.Scripts.Managers
             {
                 _gameParams = gameData.GameParams;
                 MapManager.Instance.GenerateMap(gameData.Tiles);
-                MapManager.Instance.ShowHexes();                
+                MapManager.Instance.ShowHexes();
+                foreach (var b in gameData.Buildings)
+                {
+                    BuildManager.Instance.StartBuilding(b.BuildingType
+                        , MapManager.Instance.FindTile(b.Position.q, b.Position.r));
+                }
             }
 
             var baseTile = MapManager.Instance.FindTile(0, 0);
@@ -57,6 +62,7 @@ namespace Assets.Scripts.Managers
         {
             var gd = new GameData();
             gd.Tiles = MapManager.Instance.Tiles;
+            gd.Buildings = BuildManager.Instance.Buildings.Select(s => s.BuildingData).ToList();
 
             FileManager.SaveData("gameData.json", gd);
         }
