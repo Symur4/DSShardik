@@ -1,4 +1,5 @@
-﻿using Assets.Scripts.Managers;
+﻿using Assets._Scripts.Managers;
+using Assets.Scripts.Managers;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,6 +29,7 @@ namespace Assets._Scripts.UI
             }
 
             var tile = MapManager.Instance.SelectedTile.TileData;
+            var buildingInPos = BuildManager.Instance.GetBuildingInPos(tile.Hex);
             if(tile == null
                 || tile.IsExplored == false)
             {
@@ -45,7 +47,8 @@ namespace Assets._Scripts.UI
 
             if(tile.IsExplored
                 && tile.HasEnergy
-                && tile.ResourceType == Scripts.TypeConstants.ResourceType.Limestone)
+                && tile.ResourceType == Scripts.TypeConstants.ResourceType.Limestone
+                && (buildingInPos == null || buildingInPos.BuildingData.BuildingType == TypeConstants.BuildingType.Pylon))
             {
                 _buildButtons.Where(w => w.BuildingType == TypeConstants.BuildingType.SurfaceMiner)
                     .ToList()

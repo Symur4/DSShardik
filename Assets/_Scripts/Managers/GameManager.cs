@@ -35,10 +35,7 @@ namespace Assets.Scripts.Managers
                 }
             }
 
-            var baseTile = MapManager.Instance.FindTile(0, 0);
-
-            BuildManager.Instance.StartBuilding(_Scripts.TypeConstants.BuildingType.MainBase
-                , baseTile);
+            
 
         }
 
@@ -54,6 +51,12 @@ namespace Assets.Scripts.Managers
             _gameParams.Dimension = 10;
             MapManager.Instance.GenerateMap(_gameParams.Seed, _gameParams.Dimension);
             MapManager.Instance.ShowHexes();
+
+            var baseTile = MapManager.Instance.FindTile(0, 0);
+
+
+            BuildManager.Instance.StartBuilding(_Scripts.TypeConstants.BuildingType.MainBase
+                , baseTile);
 
         }
 

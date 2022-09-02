@@ -44,10 +44,10 @@ namespace Assets.Scripts.Managers
             _hexMap.FindTile(0, 0, 0).HasEnergy = true;
             _hexMap.AddNoise(seed);
             _hexMap.SetTileTypes(new List<BiomLimit> {
-                new BiomLimit() { Start=0, End=20, TileType = TileType.Water },
-                new BiomLimit() { Start=20, End=40, TileType = TileType.Desert },
-                new BiomLimit() { Start=40, End=70, TileType = TileType.Grass },
-                new BiomLimit() { Start=70, End=200, TileType = TileType.Mountain },
+                //new BiomLimit() { Start=0, End=20, TileType = TileType.Water },
+                //new BiomLimit() { Start=20, End=40, TileType = TileType.Desert },
+                new BiomLimit() { Start=0, End=200, TileType = TileType.Grass },
+                //new BiomLimit() { Start=70, End=200, TileType = TileType.Mountain },
             });
             GenerateResources();
         }

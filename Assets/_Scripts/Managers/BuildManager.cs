@@ -1,5 +1,6 @@
 ﻿using Assets._Scripts.Buildings;
 using Assets._Scripts.Map;
+using Assets._Scripts.Services;
 using Assets._Scripts.TypeConstants;
 using Assets.Scripts.Core;
 using Assets.Scripts.Core.Map;
@@ -28,14 +29,27 @@ namespace Assets._Scripts.Managers
 
         }
 
+        public Building GetBuildingInPos(Hex hex)
+        {            
+            return _buildings.Where(w => w.BuildingData.Position.IsEqual(hex)
+                                && w.BuildingData.BuildingType != BuildingType.Pylon).FirstOrDefault();
+        }
+
         public void StartBuilding(BuildingType buildingType, MapTile tile)
         {
+            var buildingInPos = GetBuildingInPos(tile.TileData.Hex);
+            if(buildingInPos != null 
+                 && buildingInPos.BuildingData.BuildingType != BuildingType.Pylon)
+            {
+                return;
+            }
+
             var container = tile.transform.Find("Props");
             foreach (Transform child in container)
             {
                 GameObject.Destroy(child.gameObject);
             }
-
+            
 
             var buildingResource = ResourceCore.Instance
                 .Buildings
@@ -60,7 +74,13 @@ namespace Assets._Scripts.Managers
                 tile.TileData.HasEnergy = true;
             }
 
-            
+            var resourceGenerator = building.GetComponent<ResourceGenerator>();
+            if (resourceGenerator != null)
+            {
+                resourceGenerator.IsWorking = true;
+            }
+
+
 
 
         }

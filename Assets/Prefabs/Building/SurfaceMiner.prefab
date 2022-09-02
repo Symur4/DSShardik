@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 7052837304624846521}
   - component: {fileID: 3153003626296008880}
   - component: {fileID: 875192968459621498}
+  - component: {fileID: 1024156035904617767}
   m_Layer: 0
   m_Name: SurfaceMiner
   m_TagString: Untagged
@@ -97,3 +98,19 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &1024156035904617767
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1667936247636243887}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8b84df7bf55138c49801633bfecb2b98, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  GenerateResources:
+  - ResourceType: 5
+    Amount: 1
+    Period: 5

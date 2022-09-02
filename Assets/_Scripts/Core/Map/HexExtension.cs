@@ -35,6 +35,11 @@ namespace Assets.Scripts.Core.Map
             return a.Subtract(b).Length();
         }
 
+        public static bool IsEqual(this Hex a, Hex b)
+        {
+            return a.q == b.q && a.r == b.r;
+        }
+
         static public List<Hex> directions = new List<Hex> {
             new Hex(1, 0)
             ,new Hex(1, -1)
