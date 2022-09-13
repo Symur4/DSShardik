@@ -16,12 +16,21 @@ namespace Assets.Scripts.Managers
         private GameParams _gameParams;
         private void Start()
         {
+            Load();
+        }
 
+        void OnApplicationQuit()
+        {
+            SaveGame();
+        }
+
+        private void Load()
+        {
             var gameData = FileManager.LoadData<GameData>("gameData.json");
 
             if (gameData == null)
             {
-                Init();   
+                Init();
             }
             else
             {
@@ -35,13 +44,7 @@ namespace Assets.Scripts.Managers
                 }
             }
 
-            
-
-        }
-
-        void OnApplicationQuit()
-        {
-            SaveGame();
+            DroneManager.Instance.AddDrone(MapManager.Instance.FindTile(0, 0));
         }
 
         public void Init()

@@ -14,6 +14,8 @@ namespace Assets._Scripts.Managers
     {
         public event Action<Vector3> OnRightMouseClicked;
         public event Action<Vector3> OnLeftMouseClicked;
+        public event Action<KeyCode> OnKeyboardAction;
+
 
         private void Update()
         {
@@ -41,6 +43,11 @@ namespace Assets._Scripts.Managers
             if (Input.GetKeyDown(KeyCode.X))
             {
                 GameManager.Instance.Init();                
+            }
+
+            if (Input.GetKeyDown(KeyCode.M))
+            {
+                OnKeyboardAction?.Invoke(KeyCode.M);
             }
 
 
