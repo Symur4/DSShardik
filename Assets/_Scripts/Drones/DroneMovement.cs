@@ -14,6 +14,7 @@ namespace Assets._Scripts.Drones
         private float _maxSpeed = 10f;
         private float _maxHeight = 5f;
         private Vector3 _targetPosition = Vector3.zero;
+        private event Action OnMoveFinished;
 
         private void Update()
         {
@@ -37,6 +38,10 @@ namespace Assets._Scripts.Drones
                 if (this.transform.position == _targetPosition)
                 {
                     _targetPosition = Vector3.zero;
+                    if(OnMoveFinished != null)
+                    {
+                        OnMoveFinished();
+                    }
                 }
 
             }
@@ -51,6 +56,12 @@ namespace Assets._Scripts.Drones
         public void Move(Vector3 pos)
         {
             _targetPosition = pos;            
+        }
+
+        public void Move(Vector3 pos, Action onMoveFinished)
+        {
+            this.OnMoveFinished = onMoveFinished;
+            _targetPosition = pos;
         }
     }
 }

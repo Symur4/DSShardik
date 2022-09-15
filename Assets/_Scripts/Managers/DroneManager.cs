@@ -1,4 +1,5 @@
-﻿using Assets._Scripts.Drones;
+﻿using Assets._Scripts.Core.Task;
+using Assets._Scripts.Drones;
 using Assets._Scripts.Map;
 using Assets.Scripts.Core;
 using Assets.Scripts.Managers;
@@ -27,8 +28,9 @@ namespace Assets._Scripts.Managers
             {
                 if (MapManager.Instance.SelectedTile != null)
                 {
-                    var drone = _drones.Where(w => w.IsIdle).FirstOrDefault();
-                    drone.Move(MapManager.Instance.SelectedTile);
+                    //var drone = _drones.Where(w => w.IsIdle).FirstOrDefault();
+                    //drone.Move(MapManager.Instance.SelectedTile);
+                    TaskManager.Instance.AddTask(new DroneMoveTask(MapManager.Instance.SelectedTile));
                 }
             }
         }
@@ -50,7 +52,11 @@ namespace Assets._Scripts.Managers
                 drone.Init(droneResource);
                 _drones.Add(drone);                
             }
+        }
 
+        public Drone GetIdleDrone()
+        {
+            return _drones.Where(w => w.IsIdle).FirstOrDefault();
         }
     }
 }

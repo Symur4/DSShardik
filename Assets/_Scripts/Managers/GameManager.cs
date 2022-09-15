@@ -1,4 +1,5 @@
-﻿using Assets._Scripts.Core;
+﻿using Assets._Scripts.Buildings;
+using Assets._Scripts.Core;
 using Assets._Scripts.Managers;
 using Assets._Scripts.Models;
 using Assets.Scripts.Core;
@@ -39,8 +40,8 @@ namespace Assets.Scripts.Managers
                 MapManager.Instance.ShowHexes();
                 foreach (var b in gameData.Buildings)
                 {
-                    BuildManager.Instance.StartBuilding(b.BuildingType
-                        , MapManager.Instance.FindTile(b.Position.q, b.Position.r));
+                    TaskManager.Instance.AddTask(new BuildTask(b.BuildingType
+                        ,MapManager.Instance.FindTile(b.Position.q, b.Position.r)));
                 }
             }
 

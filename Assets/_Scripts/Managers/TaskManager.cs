@@ -22,60 +22,40 @@ namespace Assets._Scripts.Managers
         {
             if (!_paused)
             {
-                if (_taskList.Count > 0)
-                {
-                    //StartCoroutine("UpdateTimedTaskCounters"); << I'm not completely sure if this is necessary, possibly with hundreds of objects in the scene?                    
-                    ProcessList();
-                }
-                else
-                {
-                   // Debug.Log("TaskManager - TaskList is empty!");
-                }
+                InitializeTasks();
+
+                ExecuteTasks();
+
+                RemoveFinishedTasks();
             }
         }
 
-        void ProcessList()
+        private void RemoveFinishedTasks()
         {
+            _taskList.RemoveAll(w => w.IsFinished() == true);
+        }
 
-            //If this Task decides it is invalid, then delete it.
-            if (_taskList[0].Valid)
+        private void ExecuteTasks()
+        {
+            foreach (var t in _taskList.Where(w => w.IsInitialised == true
+                                                && w.Started == false 
+                                                && w.IsFinished() == false))
             {
-                //If its not initialised, intialise it.
-                if (_taskList[0].Initialised)
-                {
-                    //If the task isn't finished, execute it.
-                    if (!_taskList[0].Finished())
-                    {
-                        if (_taskList[0].Started == false)
-                        {
-                            _taskList[0].Started = true;
-                            _taskList[0].OnTaskStart();
-                        }
-                        _taskList[0].Execute();
-                    }
-                    else if (_taskList[0].Finished())
-                    {
-                        Debug.Log("TaskManager - Task finished, removing!");
-                        //Call OnTaskEnd() and then remove the task.
-                        _taskList[0].OnTaskEnd();
-                        _taskList.RemoveAt(0);
-                        //If PrioritySort is on, sort the list now, before we start the next task.
-                        //if (PrioritySort)
-                        //{
-                        //    SortListByPriority();
-                        //}
-                    }
-                }
-                else
-                {
-                    _taskList[0].Initialise();
-                }
+                t.Execute();
             }
-            else if (!_taskList[0].Valid)
+        }
+
+        void InitializeTasks()
+        {
+            foreach (var t in _taskList.Where(w => w.IsInitialised == false))
             {
-                Debug.LogWarning("TaskManager - Invalid Task detected, removing!");
-                _taskList.RemoveAt(0);
+                t.Initialise();
             }
+        }
+
+        public  void AddTask(Task newTask)
+        {
+            _taskList.Add(newTask);
         }
     }
 }

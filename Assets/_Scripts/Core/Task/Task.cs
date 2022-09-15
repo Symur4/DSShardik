@@ -13,7 +13,7 @@ namespace Assets._Scripts.Core.Task
         public abstract bool Valid { get; }
 
         //Returns true if the Task has had Initialise() called.
-        public bool Initialised { get; set; }
+        public bool IsInitialised { get; set; }
 
         //Returns True if the Task has been started.
         public bool Started { get; set; }
@@ -25,7 +25,7 @@ namespace Assets._Scripts.Core.Task
         //Constructor.
         public Task()
         {
-            Initialised = false;
+            IsInitialised = false;
             Started = false;
         }
 
@@ -40,15 +40,15 @@ namespace Assets._Scripts.Core.Task
         public abstract void Execute();
 
         //Allows the TaskManager to check if a task has finished, each task defines it's own rules as to what finished means.
-        public abstract bool Finished();
-        public bool _finished = false;
+        public abstract bool IsFinished();
+        public bool _isFinished = false;
 
         //OnTaskEnd() is called after the Task decides or is told it is finished.
         public virtual void OnTaskEnd() { }
 
         public virtual void Reset()
         {
-            Initialised = false;
+            IsInitialised = false;
             Started = false;            
         }
 
