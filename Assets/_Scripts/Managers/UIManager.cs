@@ -1,4 +1,5 @@
-﻿using Assets._Scripts.UI;
+﻿using Assets._Scripts.Buildings;
+using Assets._Scripts.UI;
 using Assets.Scripts.Core;
 using Assets.Scripts.Managers;
 using System.Collections;
@@ -33,10 +34,13 @@ namespace Assets._Scripts.Managers
         {
             var bb = buildButton.GetComponent<BuildButton>();
 
-            BuildManager.Instance.StartBuilding(bb.BuildingType
-                , MapManager.Instance.SelectedTile);
+            //BuildManager.Instance.StartBuilding(bb.BuildingType
+            //    , MapManager.Instance.SelectedTile);
 
-            Debug.Log("Button cliecked:" + bb.BuildingType);
+            TaskManager.Instance.AddTask(new BuildTask(bb.BuildingType
+                , MapManager.Instance.SelectedTile));
+
+            Debug.Log("Button clicked:" + bb.BuildingType);
         }
     }
 }

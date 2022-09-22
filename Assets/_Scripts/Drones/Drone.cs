@@ -34,9 +34,8 @@ namespace Assets._Scripts.Drones
         }
 
         private void MoveFinished()
-        {
-            this._isIdle = true;
-            Debug.Log("Drone is idle");
+        {            
+         
         }
 
         public void Init(ScriptableDrone drone)
@@ -53,6 +52,11 @@ namespace Assets._Scripts.Drones
         public void SetBusy()
         {
             _isIdle = false;
+        }
+
+        public void SetIdle()
+        {
+            _isIdle = true;
         }
     }
 }

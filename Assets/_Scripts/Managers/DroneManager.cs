@@ -30,7 +30,7 @@ namespace Assets._Scripts.Managers
                 {
                     //var drone = _drones.Where(w => w.IsIdle).FirstOrDefault();
                     //drone.Move(MapManager.Instance.SelectedTile);
-                    TaskManager.Instance.AddTask(new DroneMoveTask(MapManager.Instance.SelectedTile));
+                    TaskManager.Instance.AddTask(new DroneMoveTask(MapManager.Instance.SelectedTile, null));
                 }
             }
         }
@@ -54,9 +54,15 @@ namespace Assets._Scripts.Managers
             }
         }
 
-        public Drone GetIdleDrone()
+        public Drone GetIdleDrone(bool setBusy = false)
         {
-            return _drones.Where(w => w.IsIdle).FirstOrDefault();
+            var drone = _drones.Where(w => w.IsIdle).FirstOrDefault();
+            if(drone != null
+                && setBusy)
+            {
+                drone.SetBusy();
+            }
+            return drone;
         }
     }
 }

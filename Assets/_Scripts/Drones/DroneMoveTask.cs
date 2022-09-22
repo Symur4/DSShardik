@@ -16,9 +16,10 @@ namespace Assets._Scripts.Drones
 
         public override bool Valid => throw new NotImplementedException();
 
-        public DroneMoveTask(MapTile tile)
+        public DroneMoveTask(MapTile tile, Drone drone)
         {
             this._tile = tile;
+            _currentDrone = drone;
         }
 
         public override void Execute()
@@ -29,7 +30,7 @@ namespace Assets._Scripts.Drones
         }
 
         private void OnMoveFinished()
-        {
+        {            
             this._isFinished = true;
         }
 
@@ -39,10 +40,10 @@ namespace Assets._Scripts.Drones
         }
 
         public override void Initialise()
-        {
-            _currentDrone = DroneManager.Instance.GetIdleDrone();
+        {            
             if (_currentDrone == null)
             {
+                _currentDrone = DroneManager.Instance.GetIdleDrone();
                 this.IsInitialised = false;
                 return;
             }

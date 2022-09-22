@@ -10,7 +10,7 @@ namespace Assets._Scripts.Models
     [Serializable]
     public abstract class EntityBase : MonoBehaviour
     {
-        private string Id;
+        protected string Id;
 
         [SerializeField]
         private string Name;

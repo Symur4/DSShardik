@@ -14,3 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Prefab: {fileID: 4336217851308881188, guid: 7e73f85ecad56e247b75bc809651ee44, type: 3}
   BuildingType: 6
+  ResourceCost:
+  - ResourceType: 3
+    Amount: 5
+  - ResourceType: 4
+    Amount: 10
+  BuildLength: 5

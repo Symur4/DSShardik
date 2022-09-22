@@ -1,5 +1,7 @@
-﻿using Assets._Scripts.TypeConstants;
+﻿using Assets._Scripts.Models;
+using Assets._Scripts.TypeConstants;
 using Assets.Scripts.Core.Map;
+using Assets.Scripts.TypeConstants;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,6 +14,11 @@ namespace Assets._Scripts.Buildings
     public class BuildingData
     {
         public BuildingType BuildingType;
-        public Hex Position;
+        public Hex Position;        
+        public List<ResourceData> LocalResources;
+        public float BuildLength;
+        public float BuildProgress;
+        public string Id;
+
     }
 }

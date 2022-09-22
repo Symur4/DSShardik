@@ -41,7 +41,7 @@ namespace Assets._Scripts.Core.Task
 
         //Allows the TaskManager to check if a task has finished, each task defines it's own rules as to what finished means.
         public abstract bool IsFinished();
-        public bool _isFinished = false;
+        protected bool _isFinished = false;
 
         //OnTaskEnd() is called after the Task decides or is told it is finished.
         public virtual void OnTaskEnd() { }

@@ -40,8 +40,7 @@ namespace Assets.Scripts.Managers
                 MapManager.Instance.ShowHexes();
                 foreach (var b in gameData.Buildings)
                 {
-                    TaskManager.Instance.AddTask(new BuildTask(b.BuildingType
-                        ,MapManager.Instance.FindTile(b.Position.q, b.Position.r)));
+                    BuildManager.Instance.StartBuilding(b);                         
                 }
             }
 
@@ -59,8 +58,11 @@ namespace Assets.Scripts.Managers
             var baseTile = MapManager.Instance.FindTile(0, 0);
 
 
-            BuildManager.Instance.StartBuilding(_Scripts.TypeConstants.BuildingType.MainBase
-                , baseTile);
+            BuildManager.Instance.StartBuilding(new BuildingData() { 
+                Id = Guid.NewGuid().ToString(),
+                BuildingType = _Scripts.TypeConstants.BuildingType.MainBase,
+                Position = baseTile.TileData.Hex
+            });
 
         }
 

@@ -47,10 +47,14 @@ namespace Assets._Scripts.Managers
 
         void InitializeTasks()
         {
-            foreach (var t in _taskList.Where(w => w.IsInitialised == false))
+            for (int i = 0; i < _taskList.Count(); i++)
             {
-                t.Initialise();
+                _taskList[i].Initialise();
             }
+            //foreach (var t in _taskList.Where(w => w.IsInitialised == false))
+            //{
+                
+            //}
         }
 
         public  void AddTask(Task newTask)

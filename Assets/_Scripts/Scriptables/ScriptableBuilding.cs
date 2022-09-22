@@ -1,4 +1,5 @@
-﻿using Assets._Scripts.TypeConstants;
+﻿using Assets._Scripts.Models;
+using Assets._Scripts.TypeConstants;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,5 +15,9 @@ namespace Assets._Scripts.Scriptables
         public MonoBehaviour Prefab;        
 
         public BuildingType BuildingType;
+
+        public List<ResourceData> ResourceCost;
+
+        public float BuildLength;
     }
 }
