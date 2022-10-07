@@ -14,6 +14,8 @@ namespace Assets._Scripts.Models
         public GameParams GameParams;
         public List<Tile> Tiles;
         public List<BuildingData> Buildings;
+        public List<ResourceData> Resources;
+        public List<DroneData> Drones;
     
     }
 }

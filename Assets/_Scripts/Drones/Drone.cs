@@ -1,5 +1,6 @@
 ﻿using Assets._Scripts.Map;
 using Assets._Scripts.Scriptables;
+using Assets.Scripts.Core.Map;
 using System;
 using System.Collections;
 using UnityEngine;
@@ -57,6 +58,11 @@ namespace Assets._Scripts.Drones
         public void SetIdle()
         {
             _isIdle = true;
+        }
+
+        public Vector3 GetTarget()
+        {
+            return _droneMovement.TargetPosition;
         }
     }
 }

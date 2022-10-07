@@ -35,7 +35,7 @@ namespace Assets._Scripts.Managers
         }
 
         public Building GetBuildingInPos(Hex hex)
-        {            
+        {
             return _buildings.Where(w => w.BuildingData.Position.IsEqual(hex)
                                 && w.BuildingData.BuildingType != BuildingType.Pylon).FirstOrDefault();
         }
@@ -43,7 +43,7 @@ namespace Assets._Scripts.Managers
         public string StartBuilding(BuildingData buildingData)
         {
             var tile = MapManager.Instance.FindTile(buildingData.Position.q, buildingData.Position.r);
-            
+
             var container = tile.transform.Find("Props");
             foreach (Transform child in container)
             {
@@ -51,7 +51,7 @@ namespace Assets._Scripts.Managers
             }
 
             var buildingInPos = GetBuildingInPos(buildingData.Position);
-            if(buildingInPos != null 
+            if (buildingInPos != null
                  && buildingInPos.BuildingData.BuildingType != BuildingType.Pylon)
             {
                 return null;
@@ -69,18 +69,47 @@ namespace Assets._Scripts.Managers
             buildingData.BuildLength = buildingResource.BuildLength;
 
             var building = spawned.GetComponent<Building>();
-            building.SetBuildingData(buildingData);            
+            building.SetBuildingData(buildingData);
 
-            if(string.IsNullOrEmpty(buildingData.Id) == true)
+            ActivateBuilding(building);
+
+            _buildings.Add(building);
+
+            return building.BuildingData.Id;
+        }
+
+        private void BuildingFinished(string id)
+        {
+            Debug.Log("Build finished:" + id);
+            var building = _buildings.Where(w => w.BuildingData.Id == id).FirstOrDefault();
+
+            ActivateBuilding(building);
+
+        }
+
+        private void ActivateBuilding(Building building)
+        {
+            if (building == null)
             {
-                spawned.gameObject.SetActive(false);
-                buildingData.Id = Guid.NewGuid().ToString();
+                return;
+            }
+
+            var tile = MapManager.Instance.FindTile(building.BuildingData.Position);
+            if (building.BuildingData.BuildingType == BuildingType.Pylon)
+            {                               
+                  tile.TileData.HasEnergy = true;
+            }
+
+            if (string.IsNullOrEmpty(building.BuildingData.Id) == true)
+            {
+                building.gameObject.SetActive(false);
+                building.BuildingData.Id = Guid.NewGuid().ToString();
                 building.StartBuild(BuildingFinished);
-
-            } else
+            }
+            else
             {
-                spawned.gameObject.SetActive(true);
-                if (buildingData.BuildingType == BuildingType.Pylon)
+                building.gameObject.SetActive(true);
+                if (building.BuildingData.BuildingType == BuildingType.Pylon)
                 {
                     tile.TileData.HasEnergy = true;
                 }
@@ -90,20 +119,6 @@ namespace Assets._Scripts.Managers
                 {
                     resourceGenerator.IsWorking = true;
                 }
-            }
-
-            _buildings.Add(building);
-
-            return building.BuildingData.Id;
-        }
-             
-        private void BuildingFinished(string id)
-        {
-            Debug.Log("Build finished:" + id);
-            var building = _buildings.Where(w => w.BuildingData.Id == id).FirstOrDefault();
-            if (building != null)
-            {
-                building.gameObject.SetActive(true);
             }
         }
     }

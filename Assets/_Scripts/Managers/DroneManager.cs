@@ -1,6 +1,7 @@
 ﻿using Assets._Scripts.Core.Task;
 using Assets._Scripts.Drones;
 using Assets._Scripts.Map;
+using Assets._Scripts.Models;
 using Assets.Scripts.Core;
 using Assets.Scripts.Managers;
 using System.Collections;
@@ -37,12 +38,19 @@ namespace Assets._Scripts.Managers
 
         public void AddDrone(MapTile tile)
         {
+            AddDrone(new DroneData() { 
+                CurrentPosition = new Vector3(tile.transform.position.x, 2, tile.transform.position.z)
+            });
+        }
+
+        private void AddDrone(DroneData newDrone)
+        {
             var droneResource = ResourceCore.Instance
-               .DroneList               
+               .DroneList
                .FirstOrDefault();
 
             var spawned = Instantiate(droneResource.Prefab
-               , new Vector3(tile.transform.position.x, 2, tile.transform.position.z)
+               , newDrone.CurrentPosition
                , Quaternion.identity
                , DroneContainer.transform);
 
@@ -50,7 +58,7 @@ namespace Assets._Scripts.Managers
             if (drone != null)
             {
                 drone.Init(droneResource);
-                _drones.Add(drone);                
+                _drones.Add(drone);
             }
         }
 
@@ -63,6 +71,23 @@ namespace Assets._Scripts.Managers
                 drone.SetBusy();
             }
             return drone;
+        }
+
+        public List<DroneData> GetDronesData()
+        {
+            return _drones.Select(d => new DroneData() { 
+            CurrentPosition = d.transform.position
+            ,TargetPosition = d.GetTarget()
+            }).ToList();
+        }
+
+        public void InitDrones(List<DroneData> drones)
+        {
+            foreach (var drone in drones)
+            {
+                AddDrone(drone);
+            }
+
         }
     }
 }

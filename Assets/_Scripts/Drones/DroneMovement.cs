@@ -16,6 +16,7 @@ namespace Assets._Scripts.Drones
         private Vector3 _targetPosition = Vector3.zero;
         private event Action OnMoveFinished;
 
+        public Vector3 TargetPosition => _targetPosition; 
         private void Update()
         {
             UpdateMovement();
@@ -63,5 +64,7 @@ namespace Assets._Scripts.Drones
             this.OnMoveFinished = onMoveFinished;
             _targetPosition = pos;
         }
+
+
     }
 }

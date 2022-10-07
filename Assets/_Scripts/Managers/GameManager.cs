@@ -42,9 +42,10 @@ namespace Assets.Scripts.Managers
                 {
                     BuildManager.Instance.StartBuilding(b);                         
                 }
+                ResourceManager.Instance.InitResources(gameData.Resources);  
+                DroneManager.Instance.InitDrones(gameData.Drones);
             }
 
-            DroneManager.Instance.AddDrone(MapManager.Instance.FindTile(0, 0));
         }
 
         public void Init()
@@ -64,6 +65,13 @@ namespace Assets.Scripts.Managers
                 Position = baseTile.TileData.Hex
             });
 
+            ResourceManager.Instance.ResourceGenerated(TypeConstants.ResourceType.Concrete, 100); 
+            ResourceManager.Instance.ResourceGenerated(TypeConstants.ResourceType.IronBar, 100);
+
+            DroneManager.Instance.AddDrone(MapManager.Instance.FindTile(0, 0));
+            DroneManager.Instance.AddDrone(MapManager.Instance.FindTile(0, 0));
+
+
         }
 
 
@@ -72,6 +80,8 @@ namespace Assets.Scripts.Managers
             var gd = new GameData();
             gd.Tiles = MapManager.Instance.Tiles;
             gd.Buildings = BuildManager.Instance.Buildings.Select(s => s.BuildingData).ToList();
+            gd.Resources = ResourceManager.Instance.GetResourceData();
+            gd.Drones = DroneManager.Instance.GetDronesData();
 
             FileManager.SaveData("gameData.json", gd);
         }

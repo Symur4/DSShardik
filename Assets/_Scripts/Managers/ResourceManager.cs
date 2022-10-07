@@ -20,7 +20,7 @@ namespace Assets._Scripts.Managers
 
         private void Start()
         {
-            _resources = new Dictionary<ResourceType, float>();
+            //_resources = new Dictionary<ResourceType, float>();
         }
 
         public void ClearResources()
@@ -77,6 +77,14 @@ namespace Assets._Scripts.Managers
         public List<ResourceData> GetResourceData()
         {
             return _resources.Select(s => new ResourceData() { ResourceType = s.Key, Amount = s.Value }).ToList();
+        }
+
+        public void InitResources(List<ResourceData> resourceData)
+        {
+            foreach (var r in resourceData)
+            {
+                ResourceGenerated(r.ResourceType, r.Amount);
+            }
         }
 
         public float GetResource(ResourceType resourceType)

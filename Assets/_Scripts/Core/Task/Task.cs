@@ -22,11 +22,14 @@ namespace Assets._Scripts.Core.Task
         public int Priority { get; set; }
         public int TaskID { get; set; }
 
+        public DateTime Created { get; set; }
+
         //Constructor.
         public Task()
         {
             IsInitialised = false;
             Started = false;
+            Created = DateTime.Now;
         }
 
         //To be called before Execute or the Task will (probably) fail, depending on whether the task needs to initialise at all.

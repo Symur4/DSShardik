@@ -48,7 +48,8 @@ namespace Assets._Scripts.Managers
                 return;
             }
 
-            MapManager.Instance.ExploreTile(hex.TileData);
+            TaskManager.Instance.AddTask(new ExploreTask(hex));
+            //MapManager.Instance.ExploreTile(hex.TileData);
         }
 
         private MapTile GetHexInPosition(Vector3 mousePosition)

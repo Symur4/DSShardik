@@ -17,6 +17,7 @@ namespace Assets.Scripts.Managers
         public List<Tile> Tiles => _tileMap.Select(s => s.TileData).ToList();
 
         public MapTile SelectedTile => _selectedTile;
+        public Action<Hex> OnTileExplored;
 
         private HexMap _hexMap = new HexMap();
         private Transform _tileMapContainer;
@@ -114,6 +115,16 @@ namespace Assets.Scripts.Managers
                        .FirstOrDefault();
         }
 
+        public MapTile FindTile(Hex hex)
+        {
+            return FindTile(hex.q, hex.r);
+        }
+
+        public void ExploreTile(Hex hex)
+        {
+            ExploreTile(FindTile(hex).TileData);
+        }
+
         public void ExploreTile(Tile tile)
         {
             if (tile.IsExplored == false)
@@ -139,7 +150,10 @@ namespace Assets.Scripts.Managers
 
         private void ExploreFinished(Tile tile)
         {
-            
+            if(OnTileExplored != null)
+            {
+                OnTileExplored(tile.Hex);
+            }
         }
 
         public bool HasEnergyInNeighbour(Tile tile)
