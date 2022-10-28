@@ -49,6 +49,11 @@ namespace Assets._Scripts.Managers
                .DroneList
                .FirstOrDefault();
 
+            if (newDrone.Id == 0)
+            {
+                newDrone.Id = _drones.Count + 1;
+            }
+
             var spawned = Instantiate(droneResource.Prefab
                , newDrone.CurrentPosition
                , Quaternion.identity
@@ -58,6 +63,7 @@ namespace Assets._Scripts.Managers
             if (drone != null)
             {
                 drone.Init(droneResource);
+                drone.Id = newDrone.Id;
                 _drones.Add(drone);
             }
         }
@@ -78,6 +84,7 @@ namespace Assets._Scripts.Managers
             return _drones.Select(d => new DroneData() { 
             CurrentPosition = d.transform.position
             ,TargetPosition = d.GetTarget()
+            ,Id = d.Id
             }).ToList();
         }
 

@@ -17,38 +17,50 @@ namespace Assets._Scripts.Map
         private DroneMoveTask _droneMoveTask;
 
         public ExploreTask(MapTile tile)
-        {
+        {            
             this._tile = tile;
+            
         }
 
         public override bool Valid => throw new NotImplementedException();
 
         public override void Execute()
         {            
+            Started = true;
             MapManager.Instance.ExploreTile(_tile.TileData.Hex);
-
+            Debug.Log("Explore Task started:" + TaskID);
         }        
 
         public override void Initialise()
         {
             if (_currentDrone == null)
             {
-                _currentDrone = DroneManager.Instance.GetIdleDrone(true);
-
+                _currentDrone = DroneManager.Instance.GetIdleDrone(true);                
             }
-            else
-            {
+
+            if (_currentDrone != null)
+            {                
                 if (this._droneMoveTask == null)
                 {
                     _droneMoveTask = new DroneMoveTask(_tile, _currentDrone);
+                    Debug.Log("Drone moving:" + _tile.TileData.Hex.q + ":" + _tile.TileData.Hex.q);
                     TaskManager.Instance.AddTask(_droneMoveTask);
+                    return;
                 }
 
                 if (this._droneMoveTask.IsFinished())
                 {
-                    this.IsInitialised = true;
+                    Debug.Log("ExploreTask initialized");
+
+                   this.IsInitialised = true;
+                    _droneMoveTask = null;  
                 }
             }
+        }
+
+        private void OnDroneMoveFinished()
+        {
+            
         }
 
         public override bool IsFinished()
@@ -56,11 +68,12 @@ namespace Assets._Scripts.Map
             if(this._tile.TileData.IsExplored)
             {
                 _currentDrone.SetIdle();
-                Debug.Log("Explore Task finished");
-
+                _currentDrone = null;
+                Debug.Log("Explore Task finished" + TaskID);
+                _isFinished = true;
             }
-
-            return this._tile.TileData.IsExplored;
+            
+            return _isFinished;
         }
     }
 }

@@ -10,7 +10,9 @@ namespace Assets._Scripts.Managers
 {
     public class TaskManager : Singleton<TaskManager>
     {
+        private static readonly object _lock = new object();
         private List<Task> _taskList;
+        private long taskCounter = 0;
 
         private bool _paused = false;
 
@@ -18,8 +20,8 @@ namespace Assets._Scripts.Managers
         {
             _taskList = new List<Task>();
         }
-        void Update()
-        {
+        private void Update()
+        {            
             if (!_paused)
             {
                 InitializeTasks();
@@ -32,14 +34,16 @@ namespace Assets._Scripts.Managers
 
         private void RemoveFinishedTasks()
         {
-            _taskList.RemoveAll(w => w.IsFinished() == true);
+            lock (_lock)
+            {
+                _taskList.RemoveAll(w => w.IsFinished() == true);
+            }
         }
 
         private void ExecuteTasks()
         {
             foreach (var t in _taskList.Where(w => w.IsInitialised == true
-                                                && w.Started == false 
-                                                && w.IsFinished() == false))
+                                                && w.Started == false ))
             {
                 t.Execute();
             }
@@ -47,19 +51,28 @@ namespace Assets._Scripts.Managers
 
         void InitializeTasks()
         {
-            for (int i = 0; i < _taskList.Count(); i++)
+            lock (_lock)
             {
-                _taskList[i].Initialise();
-            }
-            //foreach (var t in _taskList.Where(w => w.IsInitialised == false))
-            //{
-                
-            //}
+                for (int i = 0; i < _taskList.Count(); i++)
+                {
+                    if (_taskList[i].IsInitialised == false
+                        && _taskList[i].Started == false)
+                    {
+                        _taskList[i].Initialise();
+                    }
+                }
+            }           
         }
 
         public  void AddTask(Task newTask)
         {
-            _taskList.Add(newTask);
+            lock (_lock)
+            {
+                newTask.TaskID = taskCounter++;
+                Debug.Log("Task added:" + newTask.GetType() + " id:"  + newTask.TaskID);
+            
+                _taskList.Add(newTask);
+            }
         }
     }
 }

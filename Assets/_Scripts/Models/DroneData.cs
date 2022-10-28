@@ -11,9 +11,9 @@ namespace Assets._Scripts.Models
     [Serializable]
     public class DroneData
     {
-        public Vector3 TargetPosition;
+        public Vector3? TargetPosition;
         public Vector3 CurrentPosition;
-
+        public int Id = 0;
 
     }
 }

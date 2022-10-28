@@ -9,13 +9,14 @@ namespace Assets._Scripts.Drones
 {
     public class Drone : MonoBehaviour
     {
-        private DroneMovement _droneMovement;
-
+        private DroneMovement _droneMovement;        
         private bool _isIdle = true;
 
         public bool IsIdle => _isIdle;
         
-        public event Action OnMoveFinished;
+        //public event Action OnMoveFinished;
+
+        public int Id { get; set; }
 
         void Start()
         {
@@ -31,14 +32,9 @@ namespace Assets._Scripts.Drones
         private void Awake()
         {
             _droneMovement = GetComponent<DroneMovement>();
-            OnMoveFinished += MoveFinished;
+            
         }
-
-        private void MoveFinished()
-        {            
-         
-        }
-
+        
         public void Init(ScriptableDrone drone)
         { 
             _droneMovement.Init(drone.MaxSpeed, drone.MaxHeight);
@@ -46,10 +42,9 @@ namespace Assets._Scripts.Drones
 
         public void Move(MapTile tile)
         {
-            _droneMovement.Move(new Vector3(tile.transform.position.x, this.transform.position.y , tile.transform.position.z)
-                ,OnMoveFinished);
+            _droneMovement.Move(new Vector3(tile.transform.position.x, this.transform.position.y , tile.transform.position.z));
         }
-
+        
         public void SetBusy()
         {
             _isIdle = false;
@@ -58,9 +53,10 @@ namespace Assets._Scripts.Drones
         public void SetIdle()
         {
             _isIdle = true;
+            Debug.Log("Drone is idle:" + Id);
         }
 
-        public Vector3 GetTarget()
+        public Vector3? GetTarget()
         {
             return _droneMovement.TargetPosition;
         }

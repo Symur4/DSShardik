@@ -129,22 +129,19 @@ namespace Assets.Scripts.Managers
         {
             if (tile.IsExplored == false)
             {
-                var neighbours = _hexMap.GetNeighbours(tile.Hex, 1, 1);
+                //var neighbours = _hexMap.GetNeighbours(tile.Hex, 1, 1);
 
-                var neighbourTiles = FindTilesByHex(neighbours);
+                //var neighbourTiles = FindTilesByHex(neighbours);
 
-                if (tile.ExploreProgress > 0f
-                    || neighbourTiles.Where(w => w.TileData.IsExplored).Count() > 0
-                    )
-                {
+                
 
                     var tileResource = ResourceCore.Instance.Tiles.Where(w => w.TileType == tile.TileType).FirstOrDefault();
                     var tileBase = _tileMap.Where(w => w.TileData.Hex.q == tile.Hex.q
                                         && w.TileData.Hex.r == tile.Hex.r)
                         .FirstOrDefault();
 
-                    tileBase.StartExplore(ExploreFinished, _exploredTileCount++);
-                }
+                    tileBase.StartExplore(ExploreFinished, 2f); //_exploredTileCount++);
+                
             }
         }
 
@@ -224,8 +221,10 @@ namespace Assets.Scripts.Managers
 
             if(tile.HasEnergy)
             {
-                //BuildManager.Instance.StartBuilding(_Scripts.TypeConstants.BuildingType.Pylon
-                //    , tileBase);
+                BuildManager.Instance.StartBuilding(new _Scripts.Buildings.BuildingData() { 
+                    BuildingType = _Scripts.TypeConstants.BuildingType.Pylon
+                    ,Position = tile.Hex
+                }, true);
                 tileBase.ApplyPylonShader();
                 
             }

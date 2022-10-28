@@ -40,7 +40,7 @@ namespace Assets._Scripts.Managers
                                 && w.BuildingData.BuildingType != BuildingType.Pylon).FirstOrDefault();
         }
 
-        public string StartBuilding(BuildingData buildingData)
+        public string StartBuilding(BuildingData buildingData, bool isFree =false)
         {
             var tile = MapManager.Instance.FindTile(buildingData.Position.q, buildingData.Position.r);
 
@@ -62,6 +62,12 @@ namespace Assets._Scripts.Managers
               .Where(w => w.BuildingType == buildingData.BuildingType)
               .FirstOrDefault();
 
+            if(isFree == false
+               && !ResourceManager.Instance.HasRequiredResources(buildingResource.ResourceCost))
+            {
+                return String.Empty;
+            }
+
             var spawned = Instantiate(buildingResource.Prefab
                , container.position
                , Quaternion.identity
@@ -70,6 +76,11 @@ namespace Assets._Scripts.Managers
 
             var building = spawned.GetComponent<Building>();
             building.SetBuildingData(buildingData);
+
+            if (isFree == false)
+            {
+                ResourceManager.Instance.SpendResources(buildingResource.ResourceCost);
+            }
 
             ActivateBuilding(building);
 

@@ -20,7 +20,7 @@ namespace Assets._Scripts.Core.Task
 
         //Used for sorting Tasks.
         public int Priority { get; set; }
-        public int TaskID { get; set; }
+        public long TaskID { get; set; }
 
         public DateTime Created { get; set; }
 

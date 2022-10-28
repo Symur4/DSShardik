@@ -74,14 +74,14 @@ namespace Assets._Scripts.Services
             resourceGenerated.SetCurrentTimer(resourceGenerated.Period);
         }
 
-        private List<ResourceCost> GetResourceCosts(ResourceType resourceType)
+        private List<ResourceData> GetResourceCosts(ResourceType resourceType)
         {
-            var result = new List<ResourceCost>();
+            var result = new List<ResourceData>();
 
             switch (resourceType)
             {
                 case ResourceType.IronBar:
-                    result.Add(new ResourceCost()
+                    result.Add(new ResourceData()
                     {
                         Amount = 2f,
                         ResourceType = ResourceType.IronOre

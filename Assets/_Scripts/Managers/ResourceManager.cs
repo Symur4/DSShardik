@@ -44,7 +44,7 @@ namespace Assets._Scripts.Managers
             OnResourceUpdate?.Invoke(resourceType, amount, _resources[resourceType]);
         }
 
-        public void SpendResources(List<ResourceCost> spendResources)
+        public void SpendResources(List<ResourceData> spendResources)
         {
             foreach (var resource in spendResources)
             {
@@ -55,7 +55,7 @@ namespace Assets._Scripts.Managers
             }
         }
 
-        public bool HasRequiredResources(List<ResourceCost> requiredResources)
+        public bool HasRequiredResources(List<ResourceData> requiredResources)
         {
             foreach (var resource in requiredResources)
             {

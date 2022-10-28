@@ -14,6 +14,9 @@ namespace Assets.Scripts.Managers
 {
     public class GameManager : Singleton<GameManager>
     {
+        [SerializeField]
+        private bool Save = true;
+
         private GameParams _gameParams;
         private void Start()
         {
@@ -40,7 +43,7 @@ namespace Assets.Scripts.Managers
                 MapManager.Instance.ShowHexes();
                 foreach (var b in gameData.Buildings)
                 {
-                    BuildManager.Instance.StartBuilding(b);                         
+                    BuildManager.Instance.StartBuilding(b, true);                         
                 }
                 ResourceManager.Instance.InitResources(gameData.Resources);  
                 DroneManager.Instance.InitDrones(gameData.Drones);
@@ -63,7 +66,7 @@ namespace Assets.Scripts.Managers
                 Id = Guid.NewGuid().ToString(),
                 BuildingType = _Scripts.TypeConstants.BuildingType.MainBase,
                 Position = baseTile.TileData.Hex
-            });
+            }, true);
 
             ResourceManager.Instance.ResourceGenerated(TypeConstants.ResourceType.Concrete, 100); 
             ResourceManager.Instance.ResourceGenerated(TypeConstants.ResourceType.IronBar, 100);
@@ -77,13 +80,16 @@ namespace Assets.Scripts.Managers
 
         private void SaveGame()
         {
-            var gd = new GameData();
-            gd.Tiles = MapManager.Instance.Tiles;
-            gd.Buildings = BuildManager.Instance.Buildings.Select(s => s.BuildingData).ToList();
-            gd.Resources = ResourceManager.Instance.GetResourceData();
-            gd.Drones = DroneManager.Instance.GetDronesData();
+            if (this.Save)
+            {
+                var gd = new GameData();
+                gd.Tiles = MapManager.Instance.Tiles;
+                gd.Buildings = BuildManager.Instance.Buildings.Select(s => s.BuildingData).ToList();
+                gd.Resources = ResourceManager.Instance.GetResourceData();
+                gd.Drones = DroneManager.Instance.GetDronesData();
 
-            FileManager.SaveData("gameData.json", gd);
+                FileManager.SaveData("gameData.json", gd);
+            }
         }
     }
 }

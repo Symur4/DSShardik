@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Assets._Scripts.Managers;
+using Assets._Scripts.TypeConstants;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,38 +13,42 @@ namespace Assets._Scripts.Drones
 
     public class DroneMovement : MonoBehaviour
     {
-        private float _maxSpeed = 10f;
+        private float _maxSpeed = 20f;
         private float _maxHeight = 5f;
-        private Vector3 _targetPosition = Vector3.zero;
-        private event Action OnMoveFinished;
+        private Vector3? _targetPosition = null;
+        private Drone _drone;
 
-        public Vector3 TargetPosition => _targetPosition; 
-        private void Update()
+
+        private void Start()
+        {
+            _drone = GetComponent<Drone>();
+        }
+        public Vector3? TargetPosition => _targetPosition; 
+        private void FixedUpdate()
         {
             UpdateMovement();
         }
 
         private void UpdateMovement()
         {            
-            if(_targetPosition == Vector3.zero)
+            if(_targetPosition == null)
             {
                 return;
             }
+            var targetPosition = (Vector3)_targetPosition;
 
-            if(_targetPosition.x != this.transform.position.x
-                || _targetPosition.y != this.transform.position.y)
+            if(targetPosition.x != this.transform.position.x
+                || targetPosition.y != this.transform.position.y)
             {
                 float step = _maxSpeed * Time.deltaTime;
 
-                this.transform.position = Vector3.MoveTowards(transform.position, _targetPosition, step);
+                this.transform.position = Vector3.MoveTowards(transform.position, targetPosition, step);
 
-                if (this.transform.position == _targetPosition)
+                if (this.transform.position == targetPosition)
                 {
-                    _targetPosition = Vector3.zero;
-                    if(OnMoveFinished != null)
-                    {
-                        OnMoveFinished();
-                    }
+                    _targetPosition = null;
+                    EventManager.Instance.TriggerEvent(nameof(EventName.DronMovementComplete), 
+                        new Dictionary<string, object>() { { "id", _drone.Id } });
                 }
 
             }
@@ -57,14 +63,6 @@ namespace Assets._Scripts.Drones
         public void Move(Vector3 pos)
         {
             _targetPosition = pos;            
-        }
-
-        public void Move(Vector3 pos, Action onMoveFinished)
-        {
-            this.OnMoveFinished = onMoveFinished;
-            _targetPosition = pos;
-        }
-
-
+        }        
     }
 }

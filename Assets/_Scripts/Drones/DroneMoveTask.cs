@@ -1,11 +1,12 @@
 ﻿using Assets._Scripts.Core.Task;
 using Assets._Scripts.Managers;
 using Assets._Scripts.Map;
+using Assets._Scripts.TypeConstants;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-
+using UnityEngine;
 
 namespace Assets._Scripts.Drones
 {
@@ -20,18 +21,28 @@ namespace Assets._Scripts.Drones
         {
             this._tile = tile;
             _currentDrone = drone;
+            EventManager.Instance
+                .StartListening(nameof(EventName.DronMovementComplete),OnMoveFinished);
         }
 
         public override void Execute()
         {
-            _currentDrone.OnMoveFinished += OnMoveFinished;
+            Started = true;
+            
             _currentDrone.Move(_tile);
-
         }
 
-        private void OnMoveFinished()
-        {            
-            this._isFinished = true;
+        private void OnMoveFinished(Dictionary<string, object> message)
+        {
+            if ((int)message["id"] == _currentDrone.Id)
+            {
+                Debug.Log("DroneMoveTask finished: " + _currentDrone.Id);
+
+                _currentDrone = null;
+                this._isFinished = true;
+                EventManager.Instance
+                .StopListening(nameof(EventName.DronMovementComplete), OnMoveFinished);
+            }
         }
 
         public override bool IsFinished()
@@ -43,13 +54,16 @@ namespace Assets._Scripts.Drones
         {            
             if (_currentDrone == null)
             {
-                _currentDrone = DroneManager.Instance.GetIdleDrone();
-                this.IsInitialised = false;
-                return;
+                _currentDrone = DroneManager.Instance.GetIdleDrone(true);
+                if (_currentDrone != null)
+                {
+                    this.IsInitialised = true;
+                }
+            }  
+            else
+            {
+                this.IsInitialised = true;
             }
-
-            _currentDrone.SetBusy();
-            this.IsInitialised = true;
         }
     }
 }
