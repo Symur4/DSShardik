@@ -14,6 +14,8 @@ namespace Assets._Scripts.Managers
     public class SelectionManager : Singleton<SelectionManager>
     {
         private Camera _mainCamera;
+
+        private MapTile _currentMapTile;
         
         private void Awake()
         {
@@ -28,16 +30,24 @@ namespace Assets._Scripts.Managers
 
         private void OnLeftMouseCliecked(Vector3 position)
         {
-            var hex = GetHexInPosition(position);            
+            _currentMapTile = GetHexInPosition(position);            
 
-            if (hex == null)
+            if (_currentMapTile == null)
             {
                 return;
             }
 
-            MapManager.Instance.SelectTile(hex.TileData);
-            
+            OnTileSelected();
         }
+
+        private void OnTileSelected()
+        {
+            MapManager.Instance.SelectTile(_currentMapTile.TileData);
+
+            UIManager.Instance.ResetUI();
+            UIManager.Instance.UpdatePanels();
+        }
+
 
         private void OnRightMouseClicked(Vector3 position)
         {

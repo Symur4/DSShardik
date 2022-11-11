@@ -5,6 +5,7 @@ using Assets._Scripts.TypeConstants;
 using Assets.Scripts.Core;
 using Assets.Scripts.Core.Map;
 using Assets.Scripts.Managers;
+using Assets.Scripts.TypeConstants;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -130,6 +131,33 @@ namespace Assets._Scripts.Managers
                 {
                     resourceGenerator.IsWorking = true;
                 }
+            }
+        }
+
+        public void AddResourceGenerationToBuilding(ResourceType resourceType)
+        {
+            var selectedTile = MapManager.Instance.SelectedTile;
+
+            if(selectedTile == null)
+            {
+                return;
+            }
+
+            var building = GetBuildingInPos(selectedTile.TileData.Hex);
+            if(building == null)
+            {
+                return;
+            }
+
+            var resourceGenerator = building.GetComponent<ResourceGenerator>();
+            if (resourceGenerator != null)
+            {
+                resourceGenerator.AddResourceTypeForGenerate(new Models.ResourceItem() { 
+                    Amount = 1
+                    ,Period = 2
+                    ,ResourceType = resourceType
+                });
+                resourceGenerator.IsWorking = true;
             }
         }
     }

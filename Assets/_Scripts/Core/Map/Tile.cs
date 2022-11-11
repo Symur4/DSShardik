@@ -17,6 +17,6 @@ namespace Assets.Scripts.Core.Map
         public bool IsExplored;
         public float ExploreProgress;
         public bool HasEnergy;
-
+        public bool IsBuildable;
     }
 }

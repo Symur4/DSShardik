@@ -45,6 +45,7 @@ namespace Assets._Scripts.Buildings
             {
                 if (this._droneMoveTask == null)
                 {
+                    
                     _droneMoveTask = new DroneMoveTask(_tile, _currentDrone);
                     TaskManager.Instance.AddTask(_droneMoveTask);
                 }

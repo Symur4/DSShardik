@@ -11,7 +11,7 @@ namespace Assets._Scripts.Services
     {
 
         [SerializeField]
-        private List<ResourceItem> GenerateResources;
+        private List<ResourceItem> GenerateResourcesList;
 
 
         private List<ResourceItem> _resources = new List<ResourceItem>();
@@ -32,7 +32,7 @@ namespace Assets._Scripts.Services
         {
             _resources = new List<ResourceItem>();
 
-            _resources.AddRange(GenerateResources);
+            _resources.AddRange(GenerateResourcesList);
         }
 
         private void Update()
@@ -53,6 +53,11 @@ namespace Assets._Scripts.Services
             }
         }
       
+        public void AddResourceTypeForGenerate(ResourceItem resourceItem)
+        {
+            _resources.Add(resourceItem);
+        }
+
         private void GenerateResource(ResourceItem resourceGenerated)
         {
             var requiredResources = GetResourceCosts(resourceGenerated.ResourceType);

@@ -15,5 +15,6 @@ namespace Assets.Scripts.TypeConstants
         IronBar,
         Concrete,
         Limestone,
+        Regolith,
     }
 }

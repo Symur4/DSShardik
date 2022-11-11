@@ -31,7 +31,8 @@ namespace Assets._Scripts.UI
             var tile = MapManager.Instance.SelectedTile.TileData;
             var buildingInPos = BuildManager.Instance.GetBuildingInPos(tile.Hex);
             if(tile == null
-                || tile.IsExplored == false)
+                || tile.IsExplored == false
+                || tile.IsBuildable == false)
             {
                 return;
             }
@@ -45,9 +46,9 @@ namespace Assets._Scripts.UI
                     .ForEach(b => b.gameObject.SetActive(true));
             }
 
-            if(tile.IsExplored
-                && tile.HasEnergy
-                && tile.ResourceType == Scripts.TypeConstants.ResourceType.Limestone
+            if(tile.HasEnergy
+                //&& tile.ResourceType == Scripts.TypeConstants.ResourceType.Limestone
+                && tile.IsBuildable
                 && (buildingInPos == null || buildingInPos.BuildingData.BuildingType == TypeConstants.BuildingType.Pylon))
             {
                 _buildButtons.Where(w => w.BuildingType == TypeConstants.BuildingType.SurfaceMiner)

@@ -116,12 +116,12 @@ namespace Assets._Scripts.Map
                 TileData.ExploreProgress += 1f;
                 if (TileData.ExploreProgress >= _exploreLenght)
                 {
-                    ExploreFinished();
+                    SetTileExplored();
                 }
             }     
         }
 
-        private void ExploreFinished()
+        public void SetTileExplored()
         {
             
             _meshRenderer.material = OriginalMaterial;

@@ -40,6 +40,11 @@ namespace Assets._Scripts.Managers
             //    GameManager.Instance.SaveGame();
             //}
 
+            if (Input.GetKeyDown(KeyCode.F2))
+            {
+                MapManager.Instance.ExploreMap();
+            }
+
             if (Input.GetKeyDown(KeyCode.X))
             {
                 GameManager.Instance.Init();                

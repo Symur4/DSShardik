@@ -13,6 +13,8 @@ namespace Assets.Scripts.TypeConstants
         , Mountain
         , Desert
         , Water
+            ,Crater
+            ,MoonDesert
 
     }
 }

@@ -39,6 +39,7 @@ namespace Assets.Scripts.Managers
 
         public void GenerateMap(int seed, int dimension)
         {
+            Debug.Log("Map seed: " + seed);
             ClearTiles();
             _hexMap.GenerateHexes(dimension);
             _hexMap.FindTile(0, 0, 0).IsExplored = true;
@@ -46,8 +47,9 @@ namespace Assets.Scripts.Managers
             _hexMap.AddNoise(seed);
             _hexMap.SetTileTypes(new List<BiomLimit> {
                 //new BiomLimit() { Start=0, End=20, TileType = TileType.Water },
-                //new BiomLimit() { Start=20, End=40, TileType = TileType.Desert },
-                new BiomLimit() { Start=0, End=200, TileType = TileType.Grass },
+                new BiomLimit() { Start=0, End=30, TileType = TileType.Crater },
+                new BiomLimit() { Start=30, End=60, TileType = TileType.MoonDesert },
+                new BiomLimit() { Start=80, End=200, TileType = TileType.Crater },
                 //new BiomLimit() { Start=70, End=200, TileType = TileType.Mountain },
             });
             GenerateResources();
@@ -56,7 +58,7 @@ namespace Assets.Scripts.Managers
         private void GenerateResources()
         {
             //var tile = _hexMap.GetRandomHex();
-            var tile = _hexMap.GetRandomHexInRange(_hexMap.FindTile(0, 0,0).Hex, 2);
+            var tile = _hexMap.GetRandomHexInRange(_hexMap.FindTile(0, 0,0).Hex, 1);
             tile.ResourceType = ResourceType.Limestone;
 
             for (int i = 0; i < 2; i++)
@@ -92,15 +94,11 @@ namespace Assets.Scripts.Managers
                 || _selectedTile.TileData.Hex != tileBase.TileData.Hex)
             {
                 tileBase.Select();
-                _selectedTile = tileBase;
-
-                UIManager.Instance.ShowBuildPanel();
+                _selectedTile = tileBase;                               
             }
             else { 
                 tileBase.ClearSelect();
                 _selectedTile = null;
-
-                UIManager.Instance.HideBuildPanel();
             }
             
 
@@ -118,6 +116,14 @@ namespace Assets.Scripts.Managers
         public MapTile FindTile(Hex hex)
         {
             return FindTile(hex.q, hex.r);
+        }
+
+        public void ExploreMap()
+        {
+            foreach (var tile in _tileMap.Where(w => w.TileData.IsExplored == false))
+            {
+                tile.SetTileExplored();
+            }
         }
 
         public void ExploreTile(Hex hex)
@@ -209,7 +215,7 @@ namespace Assets.Scripts.Managers
             {
                 tileBase.SetMaterial(tileResource.BlankMaterial);
             }
-            tileBase.SetShader(tileResource.PylonShader);
+            //tileBase.SetShader(tileResource.PylonShader);
            
 
             tileBase.TileData = tile;
@@ -225,7 +231,7 @@ namespace Assets.Scripts.Managers
                     BuildingType = _Scripts.TypeConstants.BuildingType.Pylon
                     ,Position = tile.Hex
                 }, true);
-                tileBase.ApplyPylonShader();
+                //tileBase.ApplyPylonShader();
                 
             }
 

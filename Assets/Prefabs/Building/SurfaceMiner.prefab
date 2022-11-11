@@ -110,7 +110,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8b84df7bf55138c49801633bfecb2b98, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GenerateResources:
-  - ResourceType: 5
-    Amount: 1
-    Period: 5
+  GenerateResources: []

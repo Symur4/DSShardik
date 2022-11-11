@@ -10,12 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6d286d6cd2d23fd4caa88e89a18d7619, type: 3}
-  m_Name: Grass
+  m_Name: MoonDesert
   m_EditorClassIdentifier: 
   Prefab: {fileID: -1671280838306658577, guid: 3c26394c013b8e343b3f3b105fea5e0d, type: 3}
   BlankMaterial: {fileID: 2100000, guid: 14dc1264f6e563e4f9b3d5ee489c48b9, type: 2}
-  TileMaterail: {fileID: 2100000, guid: 919eae58b9efe544d8e2751e10358430, type: 2}
+  TileMaterail: {fileID: 2100000, guid: 9664fd16e292627489f78fdc0217be3b, type: 2}
   SelectedMaterial: {fileID: 2100000, guid: 15a2ee71da7728b448711ad722efba46, type: 2}
   PylonShader: {fileID: -6465566751694194690, guid: ecd830e111f9ef6428e11299cba45991,
     type: 3}
-  TileType: 0
+  TileType: 5
+  IsBuildable: 1

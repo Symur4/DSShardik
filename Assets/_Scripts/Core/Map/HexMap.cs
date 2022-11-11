@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Assets._Scripts.Managers;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -52,11 +53,11 @@ namespace Assets.Scripts.Core.Map
             foreach (var tile in _map)
             {
                 tile.Noise = NoiseGenerator.GetNoiseAt(tile.Hex.q, tile.Hex.r,
-                    0.1f,
+                    0.3f,
                     50f,
                     2,
+                    0.95f,
                     0.9f,
-                    0.5f,
                     seed);
             }
             Debug.Log("min:" + _map.Min(m => m.Noise));
@@ -73,7 +74,9 @@ namespace Assets.Scripts.Core.Map
 
                 if (tt != null)
                 {
+                    var t =  ResourceCore.Instance.Tiles.Where(w => w.TileType == tt.TileType).FirstOrDefault();
                     tile.TileType = tt.TileType;
+                    tile.IsBuildable = t.IsBuildable;
                 }
                 else
                 {

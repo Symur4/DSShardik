@@ -24,5 +24,7 @@ namespace Assets._Scripts.Scriptables
 
         public TileType TileType;
 
+        public bool IsBuildable;
+
     }
 }
