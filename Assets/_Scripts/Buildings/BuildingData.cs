@@ -14,7 +14,8 @@ namespace Assets._Scripts.Buildings
     public class BuildingData
     {
         public BuildingType BuildingType;
-        public Hex Position;        
+        public Hex Position;
+        public List<ResourceItem> GenerateResource;
         public List<ResourceData> LocalResources;
         public float BuildLength;
         public float BuildProgress;

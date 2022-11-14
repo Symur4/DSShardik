@@ -59,7 +59,7 @@ namespace Assets._Scripts.Managers
                     if(building.BuildingData.BuildingType == TypeConstants.BuildingType.SurfaceMiner)
                     {
                         resourceInfoCanvas.SetActive(true);
-                        _resourceInfoPanel.SetButtonsVisible();
+                        _resourceInfoPanel.ShowPanel(building);
                         _currentUIState = UIStates.ResourceInfoView;
                     }
                 }

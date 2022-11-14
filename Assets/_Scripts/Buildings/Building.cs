@@ -1,4 +1,5 @@
 ﻿using Assets._Scripts.Models;
+using Assets._Scripts.Services;
 using Assets._Scripts.TypeConstants;
 using System;
 using System.Collections.Generic;
@@ -17,15 +18,55 @@ namespace Assets._Scripts.Buildings
         private BuildingData _buildingData;        
         private bool _isBuilding;
         private Action<string> _onBuildingFinishedAction;
+        private ResourceGenerator _resourceGenerator;
 
         public bool IsBuilding => _isBuilding;
         public BuildingData BuildingData => _buildingData;
+
+        private void Awake()
+        {
+            _resourceGenerator = this.GetComponent<ResourceGenerator>();
+        }
 
         public void SetBuildingData(BuildingData buildingData)
         {
             _buildingData = buildingData;
         }
-        
+
+        public List<ResourceItem> GetGeneratedResourceTypes()
+        {
+            if (_resourceGenerator != null)
+            {
+                return _resourceGenerator.CurrentGeneratedResources;
+            }
+
+            return new List<ResourceItem>();
+        }
+
+        public void AddGeneratedResourceType(ResourceItem resourceItem)
+        {
+            if (_resourceGenerator != null)
+            {
+                _resourceGenerator.AddResourceTypeForGenerate(resourceItem);
+            }
+        }
+
+        public void StartResourceGenerator()
+        {
+            if (_resourceGenerator != null)
+            {
+                _resourceGenerator.IsWorking = true;
+            }
+        }
+
+        public void StopResourceGenerator()
+        {
+            if (_resourceGenerator != null)
+            {
+                _resourceGenerator.IsWorking = false;
+            }
+        }
+
         public void StartBuild(Action<string> onBuildFinished)
         {
             _isBuilding = true;            
@@ -57,5 +98,7 @@ namespace Assets._Scripts.Buildings
                 _onBuildingFinishedAction.Invoke(_buildingData.Id);
             }
         }
+
+
     }
 }

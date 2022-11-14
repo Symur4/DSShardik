@@ -23,7 +23,14 @@ namespace Assets._Scripts.UI
         {
             if(nameof(ResourceType.Regolith) == resourceType)
             {
-                BuildManager.Instance.AddResourceGenerationToBuilding(ResourceType.Regolith);
+                BuildManager.Instance.AddResourceGenerationToSelectedBuilding(ResourceType.Regolith);
+
+                UIManager.Instance.ResetUI();
+            }
+
+            if (nameof(ResourceType.Silica) == resourceType)
+            {
+                BuildManager.Instance.AddResourceGenerationToSelectedBuilding(ResourceType.Silica);
 
                 UIManager.Instance.ResetUI();
             }

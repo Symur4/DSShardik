@@ -1,5 +1,6 @@
 ﻿using Assets._Scripts.Buildings;
 using Assets._Scripts.Map;
+using Assets._Scripts.Models;
 using Assets._Scripts.Services;
 using Assets._Scripts.TypeConstants;
 using Assets.Scripts.Core;
@@ -126,15 +127,18 @@ namespace Assets._Scripts.Managers
                     tile.TileData.HasEnergy = true;
                 }
 
-                var resourceGenerator = building.GetComponent<ResourceGenerator>();
-                if (resourceGenerator != null)
+                if (building.BuildingData.GenerateResource != null)
                 {
-                    resourceGenerator.IsWorking = true;
+                    foreach (var r in building.BuildingData.GenerateResource)
+                    {
+                        building.AddGeneratedResourceType(r);
+                    }
+                    building.StartResourceGenerator();
                 }
             }
         }
 
-        public void AddResourceGenerationToBuilding(ResourceType resourceType)
+        public void AddResourceGenerationToSelectedBuilding(ResourceType resourceType)
         {
             var selectedTile = MapManager.Instance.SelectedTile;
 
@@ -149,16 +153,29 @@ namespace Assets._Scripts.Managers
                 return;
             }
 
-            var resourceGenerator = building.GetComponent<ResourceGenerator>();
-            if (resourceGenerator != null)
+            var newResource = new Models.ResourceItem()
             {
-                resourceGenerator.AddResourceTypeForGenerate(new Models.ResourceItem() { 
-                    Amount = 1
-                    ,Period = 2
-                    ,ResourceType = resourceType
-                });
-                resourceGenerator.IsWorking = true;
-            }
+                Amount = 1
+                ,Period = 2
+                ,ResourceType = resourceType
+            };
+            building.AddGeneratedResourceType(newResource);
+            building.StartResourceGenerator();       
+            
         }
+
+        public List<BuildingData> GetBuildingDatas()
+        {
+            var result = new List<BuildingData>();
+            foreach (var b in _buildings.Where(x => x != null))
+            {
+                var bd = b.BuildingData;
+                bd.GenerateResource = b.GetGeneratedResourceTypes();
+                result.Add(bd);
+            }
+
+            return result;
+        }
+        
     }
 }

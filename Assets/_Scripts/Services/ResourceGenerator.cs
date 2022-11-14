@@ -16,6 +16,8 @@ namespace Assets._Scripts.Services
 
         private List<ResourceItem> _resources = new List<ResourceItem>();
 
+        public List<ResourceItem> CurrentGeneratedResources => _resources;
+
         private bool _isWorking;        
 
         public bool IsWorking
@@ -25,14 +27,15 @@ namespace Assets._Scripts.Services
         }
 
         private void Awake()
-        {            
-        }
-
-        private void Start()
         {
             _resources = new List<ResourceItem>();
 
             _resources.AddRange(GenerateResourcesList);
+        }
+
+        private void Start()
+        {
+            
         }
 
         private void Update()
@@ -55,6 +58,7 @@ namespace Assets._Scripts.Services
       
         public void AddResourceTypeForGenerate(ResourceItem resourceItem)
         {
+            _resources = new List<ResourceItem>();
             _resources.Add(resourceItem);
         }
 

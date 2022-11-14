@@ -66,7 +66,7 @@ namespace Assets.Scripts.Managers
             {
                 Id = Guid.NewGuid().ToString(),
                 BuildingType = _Scripts.TypeConstants.BuildingType.MainBase,
-                Position = baseTile.TileData.Hex
+                Position = baseTile.TileData.Hex,                
             }, true);
 
             ResourceManager.Instance.ResourceGenerated(TypeConstants.ResourceType.Concrete, 100); 
@@ -85,7 +85,7 @@ namespace Assets.Scripts.Managers
             {
                 var gd = new GameData();
                 gd.Tiles = MapManager.Instance.Tiles;
-                gd.Buildings = BuildManager.Instance.Buildings.Select(s => s.BuildingData).ToList();
+                gd.Buildings = BuildManager.Instance.GetBuildingDatas();
                 gd.Resources = ResourceManager.Instance.GetResourceData();
                 gd.Drones = DroneManager.Instance.GetDronesData();
 
