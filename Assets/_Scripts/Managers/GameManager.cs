@@ -72,7 +72,7 @@ namespace Assets.Scripts.Managers
             ResourceManager.Instance.ResourceGenerated(TypeConstants.ResourceType.Concrete, 100); 
             ResourceManager.Instance.ResourceGenerated(TypeConstants.ResourceType.IronBar, 100);
 
-            //DroneManager.Instance.AddDrone(MapManager.Instance.FindTile(0, 0));
+            DroneManager.Instance.AddDrone(MapManager.Instance.FindTile(0, 0));
             DroneManager.Instance.AddDrone(MapManager.Instance.FindTile(0, 0));
 
 

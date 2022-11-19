@@ -21,10 +21,11 @@ namespace Assets._Scripts.UI
         public void ShowPanel(Building building )
         {
             CurrentResource.text = "";
-            var resource = building.BuildingData.GenerateResource.FirstOrDefault();
-            if ( resource != null )
+            var resources = building.GetGeneratedResourceTypes();
+            if ( resources != null 
+                && resources.Count() > 0 )
             {
-                CurrentResource.text = resource.ResourceType.ToString();
+                CurrentResource.text = resources.First().ResourceType.ToString();
             }
         }
 

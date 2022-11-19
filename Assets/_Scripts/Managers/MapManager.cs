@@ -52,7 +52,7 @@ namespace Assets.Scripts.Managers
                 new BiomLimit() { Start=80, End=200, TileType = TileType.Crater },
                 //new BiomLimit() { Start=70, End=200, TileType = TileType.Mountain },
             });
-            GenerateResources();
+           // GenerateResources();
         }
 
         private void GenerateResources()

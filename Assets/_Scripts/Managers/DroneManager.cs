@@ -18,9 +18,30 @@ namespace Assets._Scripts.Managers
 
         private List<Drone> _drones = new List<Drone>();
 
+
         private void Awake()
         {
             InputManager.Instance.OnKeyboardAction += OnKeyboardAction;
+            InvokeRepeating(nameof(DroneManager.MoveBackToBase), 1f, 1f);
+        }
+
+        private void Update()
+        {
+        //    MoveBackToBase();
+        }
+
+        private void MoveBackToBase()
+        {
+            foreach (var d in _drones.Where(w => w.IsIdle == true))
+            {
+                if(d.GetPosition().x != 0f
+                    && d.GetPosition().z != 0f)
+                {
+                    d.SetBusy();
+                    TaskManager.Instance.AddTask(new DroneMoveTask(MapManager.Instance.FindTile(0,0), d, false));
+
+                }
+            }
         }
 
         private void OnKeyboardAction(KeyCode code)
@@ -29,8 +50,6 @@ namespace Assets._Scripts.Managers
             {
                 if (MapManager.Instance.SelectedTile != null)
                 {
-                    //var drone = _drones.Where(w => w.IsIdle).FirstOrDefault();
-                    //drone.Move(MapManager.Instance.SelectedTile);
                     TaskManager.Instance.AddTask(new DroneMoveTask(MapManager.Instance.SelectedTile, null));
                 }
             }

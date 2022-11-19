@@ -43,7 +43,7 @@ namespace Assets._Scripts.Map
                 if (this._droneMoveTask == null)
                 {
                     _droneMoveTask = new DroneMoveTask(_tile, _currentDrone);
-                    Debug.Log("Drone moving:" + _tile.TileData.Hex.q + ":" + _tile.TileData.Hex.q);
+                    //Debug.Log("Drone moving:" + _tile.TileData.Hex.q + ":" + _tile.TileData.Hex.q);
                     TaskManager.Instance.AddTask(_droneMoveTask);
                     return;
                 }

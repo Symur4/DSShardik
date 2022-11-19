@@ -12,9 +12,10 @@ namespace Assets._Scripts.Drones
         private DroneMovement _droneMovement;        
         private bool _isIdle = true;
 
+
         public bool IsIdle => _isIdle;
-        
-        //public event Action OnMoveFinished;
+        public bool IsMoving { get; set; } = false;
+
 
         public int Id { get; set; }
 
@@ -59,6 +60,11 @@ namespace Assets._Scripts.Drones
         public Vector3? GetTarget()
         {
             return _droneMovement.TargetPosition;
+        }
+
+        public Vector3 GetPosition()
+        {
+            return this.transform.position;
         }
     }
 }

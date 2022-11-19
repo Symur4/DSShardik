@@ -41,16 +41,18 @@ namespace Assets._Scripts.Drones
                 || targetPosition.y != this.transform.position.y)
             {
                 float step = _maxSpeed * Time.deltaTime;
+                _drone.IsMoving = true;
 
-                this.transform.position = Vector3.MoveTowards(transform.position, targetPosition, step);
+                this.transform.position = Vector3.MoveTowards(transform.position, targetPosition, step);                
+            }
 
-                if (this.transform.position == targetPosition)
-                {
-                    _targetPosition = null;
-                    EventManager.Instance.TriggerEvent(nameof(EventName.DronMovementComplete), 
-                        new Dictionary<string, object>() { { "id", _drone.Id } });
-                }
-
+            if (this.transform.position == targetPosition)
+            {
+                _targetPosition = null;
+                Debug.Log("DroneMovement finished id:" + _drone.Id);
+                EventManager.Instance.TriggerEvent(nameof(EventName.DronMovementComplete),
+                    new Dictionary<string, object>() { { "id", _drone.Id } });
+                _drone.IsMoving = false;
             }
         }
 

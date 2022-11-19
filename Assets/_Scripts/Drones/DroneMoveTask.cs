@@ -13,14 +13,23 @@ namespace Assets._Scripts.Drones
     public class DroneMoveTask : Task
     {
         private Drone _currentDrone = null;
+        private readonly bool _isSubtask;
         private readonly MapTile _tile;
 
         public override bool Valid => throw new NotImplementedException();
 
-        public DroneMoveTask(MapTile tile, Drone drone)
+        public DroneMoveTask(MapTile tile)
+        {
+            this._tile = tile;            
+            EventManager.Instance
+                .StartListening(nameof(EventName.DronMovementComplete), OnMoveFinished);
+        }
+
+        public DroneMoveTask(MapTile tile, Drone drone, bool isSubtask = true)
         {
             this._tile = tile;
             _currentDrone = drone;
+            this._isSubtask = isSubtask;
             EventManager.Instance
                 .StartListening(nameof(EventName.DronMovementComplete),OnMoveFinished);
         }
@@ -30,6 +39,7 @@ namespace Assets._Scripts.Drones
             Started = true;
             
             _currentDrone.Move(_tile);
+            
         }
 
         private void OnMoveFinished(Dictionary<string, object> message)
@@ -37,6 +47,10 @@ namespace Assets._Scripts.Drones
             if ((int)message["id"] == _currentDrone.Id)
             {
                 Debug.Log("DroneMoveTask finished: " + _currentDrone.Id);
+                if(_isSubtask == false)
+                {
+                    _currentDrone.SetIdle();
+                }
 
                 _currentDrone = null;
                 this._isFinished = true;
