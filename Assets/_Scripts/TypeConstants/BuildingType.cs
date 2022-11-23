@@ -9,13 +9,17 @@ namespace Assets._Scripts.TypeConstants
 {
     public enum BuildingType
     {
-        MainBase
-        ,IronMine
+            MainBase
+            ,IronMine
             ,SurfaceMiner
-        ,SolarPanel
-        ,Generator
-        ,Smelter
-        ,Pylon
+            ,SolarPanel
+            ,Generator
+            ,Smelter
+            ,Pylon
+            ,Storage
+            ,Factory
+
+
 
     }
 }

@@ -17,33 +17,53 @@ namespace Assets._Scripts.Managers
         [SerializeField]
         private GameObject resourceSelectorCanvas = null;
 
+        [SerializeField]
+        private GameObject productInfoCanvas = null;
+        [SerializeField]
+        private GameObject productSelectorCanvas = null;
+
+
         private BuildPanel _buildPanel;
-        private ResourceInfoPanel _resourceInfoPanel;
+        private ResourceInfoPanel _resourceInfoPanel;        
         private ResourceSelectionPanel _resourceSelectionPanel;
+        
+        private ProductInfoPanel _productInfoPanel;
+        private ProductSelectionPanel _productSelectionPanel;
+
         private UIStates _currentUIState = UIStates.MapView;
 
         private void Awake()
         {
             _buildPanel = buildCanvas.GetComponent<BuildPanel>();
             _resourceInfoPanel = resourceInfoCanvas.GetComponent<ResourceInfoPanel>();
+            _productInfoPanel = productInfoCanvas.GetComponent<ProductInfoPanel>();
+
             _resourceSelectionPanel = resourceSelectorCanvas.GetComponent<ResourceSelectionPanel>();
+            _productSelectionPanel = productSelectorCanvas.GetComponent<ProductSelectionPanel>();
         }
 
         public void ResetUI()
         {
             _currentUIState = UIStates.MapView;
+           HideAllPanel();
+        }
+
+        private void HideAllPanel()
+        {
             buildCanvas.SetActive(false);
             resourceInfoCanvas.SetActive(false);
             resourceSelectorCanvas.SetActive(false);
+
+            productInfoCanvas.SetActive(false);
+            productSelectorCanvas.SetActive(false);
         }
         
         public void UpdatePanels(UIStates? nextState = null)
         {
             var selectedTile = MapManager.Instance.SelectedTile;
-            
-            buildCanvas.SetActive(false);
-            resourceInfoCanvas.SetActive(false);
-            resourceSelectorCanvas.SetActive(false);
+
+            HideAllPanel();
+
             
             if(selectedTile == null)
             {
@@ -62,6 +82,13 @@ namespace Assets._Scripts.Managers
                         _resourceInfoPanel.ShowPanel(building);
                         _currentUIState = UIStates.ResourceInfoView;
                     }
+
+                    if (building.BuildingData.BuildingType == TypeConstants.BuildingType.Factory)
+                    {
+                        productInfoCanvas.SetActive(true);
+                        _productInfoPanel.ShowPanel(building);
+                        _currentUIState = UIStates.ProductInfoView;
+                    }
                 }
                 else
                 {
@@ -78,6 +105,12 @@ namespace Assets._Scripts.Managers
                 _resourceSelectionPanel.InitResources();
             }
 
+            if (_currentUIState == UIStates.ProductInfoView
+                && nextState == UIStates.ProductSelectionView)
+            {
+                productSelectorCanvas.SetActive(true);
+                _productSelectionPanel.InitProducts();
+            }
 
         }
 

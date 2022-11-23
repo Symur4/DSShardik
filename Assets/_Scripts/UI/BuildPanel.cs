@@ -54,6 +54,14 @@ namespace Assets._Scripts.UI
                 _buildButtons.Where(w => w.BuildingType == TypeConstants.BuildingType.SurfaceMiner)
                     .ToList()
                     .ForEach(b => b.gameObject.SetActive(true));
+
+                _buildButtons.Where(w => w.BuildingType == TypeConstants.BuildingType.Storage)
+                    .ToList()
+                    .ForEach(b => b.gameObject.SetActive(true));
+
+                _buildButtons.Where(w => w.BuildingType == TypeConstants.BuildingType.Factory)
+                    .ToList()
+                    .ForEach(b => b.gameObject.SetActive(true));
             }
 
 

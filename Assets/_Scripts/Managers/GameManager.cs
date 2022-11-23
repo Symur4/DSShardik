@@ -69,7 +69,7 @@ namespace Assets.Scripts.Managers
                 Position = baseTile.TileData.Hex,                
             }, true);
 
-            ResourceManager.Instance.ResourceGenerated(TypeConstants.ResourceType.Concrete, 100); 
+            ResourceManager.Instance.ResourceGenerated(TypeConstants.ResourceType.Regolith, 200); 
             ResourceManager.Instance.ResourceGenerated(TypeConstants.ResourceType.IronBar, 100);
 
             DroneManager.Instance.AddDrone(MapManager.Instance.FindTile(0, 0));

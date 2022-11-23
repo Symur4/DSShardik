@@ -12,5 +12,7 @@ namespace Assets._Scripts.TypeConstants
             ,BuildView
             ,ResourceInfoView
             ,ResourceSelectionView
+            ,ProductInfoView
+            ,ProductSelectionView
     }
 }
