@@ -19,11 +19,11 @@ namespace Assets._Scripts.UI
 
         }
 
-        public void OnProductClick(string productType)
+        public void OnProductClick(string resourceType)
         {
-            if(nameof(ProductType.RegolithBrick) == productType)
+            if(nameof(ResourceType.RegolithBrick) == resourceType)
             {
-            //    BuildManager.Instance.AddResourceGenerationToSelectedBuilding(ResourceType.Regolith);
+                BuildManager.Instance.AddResourceGenerationToSelectedBuilding(ResourceType.RegolithBrick);
 
                 UIManager.Instance.ResetUI();
             }

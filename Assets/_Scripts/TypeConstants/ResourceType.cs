@@ -16,6 +16,8 @@ namespace Assets.Scripts.TypeConstants
         Concrete,
         Limestone,
         Regolith,
-        Silica
+        Silica,
+
+        RegolithBrick
     }
 }

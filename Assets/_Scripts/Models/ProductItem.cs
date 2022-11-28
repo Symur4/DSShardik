@@ -8,28 +8,31 @@ using System.Threading.Tasks;
 namespace Assets._Scripts.Models
 {
     [Serializable]
-    public class ResourceItem
+    public class ProductItem
     {
-        public ResourceType ResourceType;
+        private float _currentTimer = 0f;
+        private bool _isProducing = false;
+
+        public ProductType ProductType;
         public float Amount;
         public float Period;
         
-        private float _currentTimer;
-        private bool _isGenerating;
-
-        public bool IsGenerating => _isGenerating;
+        
 
         public float CurrentTimer => _currentTimer;
+        public bool IsProducing => _isProducing;
 
         public void SetCurrentTimer(float currentTimer)
         {
             _currentTimer = currentTimer;
         }
 
-        public void SetIsGenerating(bool value)
+        public void SetIsProducing(bool value)
         {
-            _isGenerating = value;
+            _isProducing=value;
         }
+
+
     }
 
 }

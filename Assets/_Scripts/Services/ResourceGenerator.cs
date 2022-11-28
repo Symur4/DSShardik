@@ -3,6 +3,7 @@ using Assets._Scripts.Models;
 using Assets.Scripts.TypeConstants;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace Assets._Scripts.Services
@@ -14,9 +15,9 @@ namespace Assets._Scripts.Services
         private List<ResourceItem> GenerateResourcesList;
 
 
-        private List<ResourceItem> _resources = new List<ResourceItem>();
+        private List<ResourceItem> _resourcesToGenerate = new List<ResourceItem>();
 
-        public List<ResourceItem> CurrentGeneratedResources => _resources;
+        public List<ResourceItem> CurrentGeneratedResources => _resourcesToGenerate;
 
         private bool _isWorking;        
 
@@ -28,9 +29,9 @@ namespace Assets._Scripts.Services
 
         private void Awake()
         {
-            _resources = new List<ResourceItem>();
+            _resourcesToGenerate = new List<ResourceItem>();
 
-            _resources.AddRange(GenerateResourcesList);
+            _resourcesToGenerate.AddRange(GenerateResourcesList);
         }
 
         private void Start()
@@ -42,45 +43,73 @@ namespace Assets._Scripts.Services
         {
             if (_isWorking)
             {
-                foreach (var resource in _resources)
+                foreach (var resource in _resourcesToGenerate)
                 {
-                    if (resource.CurrentTimer > 0)
+                    if (resource.IsGenerating == false)
                     {
-                        resource.SetCurrentTimer(resource.CurrentTimer - Time.deltaTime);
+                        var requiredResources = GetResourceCosts(resource.ResourceType);
+                        var canGenereate = CanGenerate(resource, requiredResources);
+
+                        if (canGenereate)
+                        {
+                            ResourceManager.Instance.SpendResources(
+                                   requiredResources.Where(w => w.ResourceType != ResourceType.None)
+                                   .Select(s => new ResourceData()
+                                   { Amount = s.Amount, ResourceType = s.ResourceType })
+                                   .ToList()
+                               );
+
+                            resource.SetIsGenerating(true);
+                        }
+
                     }
-                    else
+
+                    if (resource.IsGenerating)
                     {
-                        GenerateResource(resource);
+                        if (resource.CurrentTimer < resource.Period)
+                        {
+                            resource.SetCurrentTimer(resource.CurrentTimer + Time.deltaTime);
+                        }
+                        else
+                        {
+                            ResourceReady(resource);
+                            resource.SetCurrentTimer(0f);
+                            resource.SetIsGenerating(false);
+                        }
                     }
                 }
             }
         }
       
-        public void AddResourceTypeForGenerate(ResourceItem resourceItem)
+        private bool CanGenerate(ResourceItem resourceItem, List<ResourceData> requiredResources)
         {
-            _resources = new List<ResourceItem>();
-            _resources.Add(resourceItem);
-        }
+            var canGenerate = true;            
 
-        private void GenerateResource(ResourceItem resourceGenerated)
-        {
-            var requiredResources = GetResourceCosts(resourceGenerated.ResourceType);
-
-
-            var canGenerate = true;
             foreach (var rr in requiredResources)
             {
-                canGenerate = ResourceManager.Instance.HasRequiredResources(requiredResources);
+                if(rr.ResourceType != ResourceType.None)
+                {
+                    canGenerate = ResourceManager.Instance.HasRequiredResources(new List<ResourceData>() {
+                        new ResourceData() {
+                            Amount = rr.Amount,
+                            ResourceType = rr.ResourceType,
+                        }
+                    });
+                }
             }
 
-            if (canGenerate)
-            {
-                ResourceManager.Instance.SpendResources(requiredResources);
+            return canGenerate;
+        }
 
-                ResourceManager.Instance.ResourceGenerated(resourceGenerated.ResourceType, resourceGenerated.Amount);
-            }
+        public void AddResourceTypeForGenerate(ResourceItem resourceItem)
+        {
+            _resourcesToGenerate = new List<ResourceItem>();
+            _resourcesToGenerate.Add(resourceItem);
+        }
 
-            resourceGenerated.SetCurrentTimer(resourceGenerated.Period);
+        private void ResourceReady(ResourceItem resourceGenerated)
+        {
+            ResourceManager.Instance.ResourceGenerated(resourceGenerated.ResourceType, resourceGenerated.Amount);            
         }
 
         private List<ResourceData> GetResourceCosts(ResourceType resourceType)
@@ -96,6 +125,14 @@ namespace Assets._Scripts.Services
                         ResourceType = ResourceType.IronOre
                     });
                     break;
+                case ResourceType.RegolithBrick:
+                    result.Add(new ResourceData()
+                    {
+                        Amount = 20f,
+                        ResourceType = ResourceType.Regolith
+                    });
+                    break;
+
             }
 
             return result;

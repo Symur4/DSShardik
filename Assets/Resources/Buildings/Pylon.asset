@@ -17,6 +17,6 @@ MonoBehaviour:
   ResourceCost:
   - ResourceType: 3
     Amount: 5
-  - ResourceType: 4
+  - ResourceType: 8
     Amount: 10
   BuildLength: 1

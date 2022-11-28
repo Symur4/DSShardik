@@ -11,21 +11,25 @@ namespace Assets._Scripts.Managers
     public class ResourceManager : Singleton<ResourceManager>
     {
         Dictionary<ResourceType, float> _resources = new Dictionary<ResourceType, float>();
+        Dictionary<ProductType, float> _products = new Dictionary<ProductType, float>();
 
         #region Events
         public delegate void ResourceUpdateHandler(ResourceType resourceType, float amount, float totalAmount);
+        public delegate void ProductUpdateHandler(ProductType productType, float amount, float totalAmount);
         public event ResourceUpdateHandler OnResourceUpdate;
+        public event ProductUpdateHandler OnProductUpdate;
         #endregion
 
 
         private void Start()
         {
-            //_resources = new Dictionary<ResourceType, float>();
+            
         }
 
         public void ClearResources()
         {
             _resources = new Dictionary<ResourceType, float>();
+            _products = new Dictionary<ProductType, float>();
         }
 
         public void ResourceGenerated(ResourceType resourceType, float amount)
@@ -42,6 +46,22 @@ namespace Assets._Scripts.Managers
             Debug.Log("Added resource:" + resourceType.ToString());
 
             OnResourceUpdate?.Invoke(resourceType, amount, _resources[resourceType]);
+        }
+
+        public void ProductCreated(ProductType productType, float amount)
+        {
+            if (_products.ContainsKey(productType))
+            {
+                _products[productType] += amount;
+            }
+            else
+            {
+                _products.Add(productType, amount);
+            }
+
+            Debug.Log("Added product:" + productType.ToString());
+
+            OnProductUpdate?.Invoke(productType, amount, _products[productType]);
         }
 
         public void SpendResources(List<ResourceData> spendResources)
