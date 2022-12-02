@@ -18,5 +18,5 @@ MonoBehaviour:
   - ResourceType: 3
     Amount: 5
   - ResourceType: 8
-    Amount: 10
+    Amount: 2
   BuildLength: 1

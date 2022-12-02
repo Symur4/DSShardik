@@ -1,4 +1,5 @@
 ﻿using Assets._Scripts.Buildings;
+using Assets._Scripts.Core.Events;
 using Assets._Scripts.Map;
 using Assets._Scripts.Models;
 using Assets._Scripts.Services;
@@ -84,6 +85,9 @@ namespace Assets._Scripts.Managers
                 ResourceManager.Instance.SpendResources(buildingResource.ResourceCost);
             }
 
+            building.BuildingData.EnergyConsumed = buildingResource.EnergyConsumed;
+            building.BuildingData.EnergyGenerated = buildingResource.EnergyGenerated;
+
             ActivateBuilding(building);
 
             _buildings.Add(building);
@@ -98,6 +102,7 @@ namespace Assets._Scripts.Managers
 
             ActivateBuilding(building);
 
+            
         }
 
         private void ActivateBuilding(Building building)
@@ -136,6 +141,12 @@ namespace Assets._Scripts.Managers
                     building.StartResourceGenerator();
                 }
             }
+
+            EventManager.Instance.Publish<BuildingArg>(Core.Events.EventType.BuildingBuilt,
+                new BuildingArg()
+                {
+                    Id = building.BuildingData.Id,
+                });
         }
 
         public void AddResourceGenerationToSelectedBuilding(ResourceType resourceType)

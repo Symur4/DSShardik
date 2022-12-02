@@ -21,7 +21,7 @@ namespace Assets._Scripts.Drones
         public DroneMoveTask(MapTile tile)
         {
             this._tile = tile;            
-            EventManager.Instance
+            TmpEventManager.Instance
                 .StartListening(nameof(EventName.DronMovementComplete), OnMoveFinished);
         }
 
@@ -30,7 +30,7 @@ namespace Assets._Scripts.Drones
             this._tile = tile;
             _currentDrone = drone;
             this._isSubtask = isSubtask;
-            EventManager.Instance
+            TmpEventManager.Instance
                 .StartListening(nameof(EventName.DronMovementComplete),OnMoveFinished);
         }
 
@@ -54,7 +54,7 @@ namespace Assets._Scripts.Drones
 
                 _currentDrone = null;
                 this._isFinished = true;
-                EventManager.Instance
+                TmpEventManager.Instance
                 .StopListening(nameof(EventName.DronMovementComplete), OnMoveFinished);
             }
         }

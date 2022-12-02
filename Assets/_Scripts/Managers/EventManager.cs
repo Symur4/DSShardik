@@ -1,4 +1,5 @@
-﻿using Assets.Scripts.Core;
+﻿using Assets._Scripts.Core.Events;
+using Assets.Scripts.Core;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,41 +10,37 @@ namespace Assets._Scripts.Managers
 {
     public class EventManager : Singleton<EventManager>
     {
-        private Dictionary<string, Action<Dictionary<string, object>>> _eventDictionary = 
-            new Dictionary<string, Action<Dictionary<string, object>>>();
-
-        public void StartListening(string eventName, Action<Dictionary<string, object>> listener)
+        private Dictionary<Type, object> _queues = new Dictionary<Type, object>();
+        
+        public void StartListening<T>(EventType e, Action<T> listener) where T : EventArgs
         {
-            Action<Dictionary<string, object>> thisEvent;
+            var queue = GetQueue<T>();
+            queue.StartListening(e, listener);
+        }
 
-            if (Instance._eventDictionary.TryGetValue(eventName, out thisEvent))
+        public void StopListening<T>(EventType e, Action<T> listener) where T : EventArgs
+        {
+            var queue = GetQueue<T>();
+            queue.StopListening(e, listener);
+        }
+
+        public void Publish<T>(EventType e, T args) where T: EventArgs
+        {
+            var queue = GetQueue<T>();
+            queue.Publish(e, args);
+        }
+
+        private EventQueue<T> GetQueue<T>() where T : EventArgs
+        {
+            if(_queues.TryGetValue(typeof(T), out var queue))
             {
-                thisEvent += listener;
-                Instance._eventDictionary[eventName] = thisEvent;
+                return queue as EventQueue<T>; 
             }
             else
             {
-                thisEvent += listener;
-                Instance._eventDictionary.Add(eventName, thisEvent);
-            }
-        }
-
-        public void StopListening(string eventName, Action<Dictionary<string, object>> listener)
-        {            
-            Action<Dictionary<string, object>> thisEvent;
-            if (Instance._eventDictionary.TryGetValue(eventName, out thisEvent))
-            {
-                thisEvent -= listener;
-                Instance._eventDictionary[eventName] = thisEvent;
-            }
-        }
-
-        public void TriggerEvent(string eventName, Dictionary<string, object> message)
-        {
-            Action<Dictionary<string, object>> thisEvent = null;
-            if (Instance._eventDictionary.TryGetValue(eventName, out thisEvent))
-            {
-                thisEvent.Invoke(message);
+                var newQueue = new EventQueue<T>();
+                _queues.Add(typeof(T), newQueue);
+                return newQueue;
             }
         }
     }

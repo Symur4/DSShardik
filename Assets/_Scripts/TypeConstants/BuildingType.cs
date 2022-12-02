@@ -18,7 +18,7 @@ namespace Assets._Scripts.TypeConstants
             ,Pylon
             ,Storage
             ,Factory
-
+            ,PowerPlant
 
 
     }

@@ -1,4 +1,5 @@
 ﻿using Assets._Scripts.Managers;
+using Assets.Scripts.Core;
 using Assets.Scripts.Managers;
 using System.Collections;
 using System.Collections.Generic;
@@ -23,49 +24,58 @@ namespace Assets._Scripts.UI
         public void SetButtonsVisible()
         {
             _buildButtons = ButtonContainer.GetComponentsInChildren<BuildButton>(true).ToList();
-            foreach (var b in _buildButtons)
-            {
-                b.gameObject.SetActive(false);
-            }
+            //foreach (var b in _buildButtons)
+            //{
+            //    b.gameObject.SetActive(false);
+            //}
 
             var tile = MapManager.Instance.SelectedTile.TileData;
             var buildingInPos = BuildManager.Instance.GetBuildingInPos(tile.Hex);
-            if(tile == null
+            if (tile == null
                 || tile.IsExplored == false
                 || tile.IsBuildable == false)
             {
                 return;
             }
 
-            if(tile.IsExplored
+            if (tile.IsExplored
                 && tile.HasEnergy == false
                 && MapManager.Instance.HasEnergyInNeighbour(tile))
             {
-                _buildButtons.Where(w => w.BuildingType == TypeConstants.BuildingType.Pylon)
-                    .ToList()
-                    .ForEach(b => b.gameObject.SetActive(true));
+                SetButton(TypeConstants.BuildingType.Pylon);                
+                SetButton(TypeConstants.BuildingType.PowerPlant);                
             }
 
-            if(tile.HasEnergy
+            if (tile.HasEnergy
                 //&& tile.ResourceType == Scripts.TypeConstants.ResourceType.Limestone
                 && tile.IsBuildable
                 && (buildingInPos == null || buildingInPos.BuildingData.BuildingType == TypeConstants.BuildingType.Pylon))
             {
-                _buildButtons.Where(w => w.BuildingType == TypeConstants.BuildingType.SurfaceMiner)
-                    .ToList()
-                    .ForEach(b => b.gameObject.SetActive(true));
-
-                _buildButtons.Where(w => w.BuildingType == TypeConstants.BuildingType.Storage)
-                    .ToList()
-                    .ForEach(b => b.gameObject.SetActive(true));
-
-                _buildButtons.Where(w => w.BuildingType == TypeConstants.BuildingType.Factory)
-                    .ToList()
-                    .ForEach(b => b.gameObject.SetActive(true));
+                SetButton(TypeConstants.BuildingType.SurfaceMiner);
+                SetButton(TypeConstants.BuildingType.Storage);
+                SetButton(TypeConstants.BuildingType.Factory);               
             }
+        }
 
+        private void SetButton(TypeConstants.BuildingType buildingType)
+        {
+            var b = _buildButtons.Where(w => w.BuildingType == buildingType).FirstOrDefault();
 
+            if (b == null) return;
 
+            var r = ResourceCore.Instance.Buildings.Where(w => w.BuildingType == buildingType).FirstOrDefault();
+                    
+            if(r == null) return;
+
+            var hasCost = ResourceManager.Instance.HasRequiredResources(r.ResourceCost);
+
+            if (hasCost)
+            {
+                b.Enable();
+            } else
+            {
+                b.Disable();
+            }
 
         }
 

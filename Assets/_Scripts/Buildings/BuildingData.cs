@@ -20,6 +20,8 @@ namespace Assets._Scripts.Buildings
         public float BuildLength;
         public float BuildProgress;
         public string Id;
+        public float EnergyGenerated;
+        public float EnergyConsumed;
 
     }
 }

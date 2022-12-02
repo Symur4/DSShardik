@@ -11,11 +11,15 @@ namespace Assets._Scripts.Models
     public class ResourceStripeItem : MonoBehaviour
     {
         [SerializeField]
-        private Text textField;
+        private Text nameField;
 
-        public void SetText(string text)
+        [SerializeField]
+        private Text valueField;
+
+        public void SetText(string name, string value)
         {
-            textField.text = text;
+            nameField.text = name;
+            valueField.text = value;
         }
     }
 }

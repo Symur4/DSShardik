@@ -10,13 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c3185fc93a43039409f131c9645a5d7b, type: 3}
-  m_Name: Storage
+  m_Name: PowerPlant
   m_EditorClassIdentifier: 
-  Prefab: {fileID: -1526741852219336718, guid: 0e153f1fd89c6c04c845919ed9ff99d6, type: 3}
-  BuildingType: 7
+  Prefab: {fileID: 4532474056655830852, guid: 83dab304eaf969e4f809febae8d395bb, type: 3}
+  BuildingType: 9
   ResourceCost:
-  - ResourceType: 6
-    Amount: 2
-  BuildLength: 5
-  EnergyGenerated: 0
-  EnergyConsumed: 5
+  - ResourceType: 8
+    Amount: 10
+  - ResourceType: 3
+    Amount: 10
+  BuildLength: 1
+  EnergyGenerated: 100
+  EnergyConsumed: 0

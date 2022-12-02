@@ -50,7 +50,7 @@ namespace Assets._Scripts.Drones
             {
                 _targetPosition = null;
                 Debug.Log("DroneMovement finished id:" + _drone.Id);
-                EventManager.Instance.TriggerEvent(nameof(EventName.DronMovementComplete),
+                TmpEventManager.Instance.TriggerEvent(nameof(EventName.DronMovementComplete),
                     new Dictionary<string, object>() { { "id", _drone.Id } });
                 _drone.IsMoving = false;
             }

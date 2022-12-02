@@ -19,5 +19,10 @@ namespace Assets._Scripts.Scriptables
         public List<ResourceData> ResourceCost;
 
         public float BuildLength;
+
+        public float EnergyGenerated;
+
+        public float EnergyConsumed;
+
     }
 }

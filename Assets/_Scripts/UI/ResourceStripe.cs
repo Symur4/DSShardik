@@ -43,7 +43,7 @@ namespace Assets._Scripts.UI
 
                 var ri = resourceEntry.GetComponent<ResourceStripeItem>();
 
-                ri.SetText(item.Key.ToString() + ":" + item.Value.ToString());
+                ri.SetText(item.Key.ToString(), item.Value.ToString());
             }
         }
 

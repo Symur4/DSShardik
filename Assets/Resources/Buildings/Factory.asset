@@ -18,3 +18,5 @@ MonoBehaviour:
   - ResourceType: 6
     Amount: 2
   BuildLength: 5
+  EnergyGenerated: 0
+  EnergyConsumed: 10
