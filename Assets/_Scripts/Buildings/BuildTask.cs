@@ -67,6 +67,8 @@ namespace Assets._Scripts.Buildings
                 BuildingType = _buildingType,
                 Position = _tile.TileData.Hex
             });
+
+            
             
         }
 

@@ -44,8 +44,9 @@ namespace Assets._Scripts.Managers
         {
             MapManager.Instance.SelectTile(_currentMapTile.TileData);
 
-            UIManager.Instance.ResetUI();
-            UIManager.Instance.UpdatePanels();
+            UIManager.Instance.UpdateUI();
+            //UIManager.Instance.ResetUI();
+            //UIManager.Instance.UpdatePanels();
         }
 
 

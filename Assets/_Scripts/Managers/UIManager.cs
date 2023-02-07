@@ -22,6 +22,9 @@ namespace Assets._Scripts.Managers
         [SerializeField]
         private GameObject productSelectorCanvas = null;
 
+        [SerializeField]
+        private GameUIManager _gameUIManager;
+
 
         private BuildPanel _buildPanel;
         private ResourceInfoPanel _resourceInfoPanel;        
@@ -58,7 +61,23 @@ namespace Assets._Scripts.Managers
             productSelectorCanvas.SetActive(false);
         }
         
-        public void UpdatePanels(UIStates? nextState = null)
+        public void UpdateUI()
+        {
+            var selectedTile = MapManager.Instance.SelectedTile;
+
+            
+            if (selectedTile == null)
+            {
+                _currentUIState = UIStates.MapView;
+                return;
+            }
+
+            _gameUIManager.ShowExploreModal();
+
+
+        }
+
+        public void UpdatePanels_Deprecated(UIStates? nextState = null)
         {
             var selectedTile = MapManager.Instance.SelectedTile;
 

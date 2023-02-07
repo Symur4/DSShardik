@@ -138,5 +138,17 @@ namespace Assets._Scripts.Map
             AddResource(TileData.ResourceType);
             
         }
+
+        public void ShowProgress(float maxValue, float currentValue)
+        {
+            _progressBar.SetVisibility(true);
+            _progressBar.SetProgressValues(maxValue, currentValue);
+        }
+
+        public void HideProgress()
+        {
+            _progressBar.SetVisibility(false);
+        }
+        
     }
 }

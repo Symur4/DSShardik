@@ -1,6 +1,8 @@
-﻿using Assets._Scripts.Models;
+﻿using Assets._Scripts.Map;
+using Assets._Scripts.Models;
 using Assets._Scripts.Services;
 using Assets._Scripts.TypeConstants;
+using Assets.Scripts.Managers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,7 +17,8 @@ namespace Assets._Scripts.Buildings
     {
         [SerializeField]
         private BuildingType BuildingType;
-        private BuildingData _buildingData;        
+        private BuildingData _buildingData;
+        private MapTile _tile;
         private bool _isBuilding;
         private Action<string> _onBuildingFinishedAction;
         private ResourceGenerator _resourceGenerator;
@@ -31,6 +34,8 @@ namespace Assets._Scripts.Buildings
         public void SetBuildingData(BuildingData buildingData)
         {
             _buildingData = buildingData;
+            _tile = MapManager.Instance.FindTile(_buildingData.Position);
+            
         }
 
         public List<ResourceItem> GetGeneratedResourceTypes()
@@ -72,12 +77,13 @@ namespace Assets._Scripts.Buildings
             _isBuilding = true;            
             _buildingData.BuildProgress = 0f;
             _onBuildingFinishedAction = onBuildFinished;
-
+            
             InvokeRepeating("BuildProgress", 1f, 1f);
         }
 
         private void BuildProgress()
         {
+            
             if(_isBuilding)
             {
                 _buildingData.BuildProgress += 1f;
@@ -86,6 +92,7 @@ namespace Assets._Scripts.Buildings
             {
                 BuildFinished();
             }
+            _tile.ShowProgress(_buildingData.BuildLength, _buildingData.BuildProgress);
         }
 
         private void BuildFinished()
@@ -97,6 +104,7 @@ namespace Assets._Scripts.Buildings
             {
                 _onBuildingFinishedAction.Invoke(_buildingData.Id);
             }
+            _tile.HideProgress();
         }
 
 

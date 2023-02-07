@@ -92,6 +92,8 @@ namespace Assets._Scripts.Managers
 
             _buildings.Add(building);
 
+
+
             return building.BuildingData.Id;
         }
 

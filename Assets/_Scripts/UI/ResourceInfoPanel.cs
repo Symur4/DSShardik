@@ -31,7 +31,7 @@ namespace Assets._Scripts.UI
 
         public void OnAddResourceClick()
         {
-            UIManager.Instance.UpdatePanels(TypeConstants.UIStates.ResourceSelectionView);
+            UIManager.Instance.UpdatePanels_Deprecated(TypeConstants.UIStates.ResourceSelectionView);
         }
     }
 }

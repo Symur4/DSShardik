@@ -31,7 +31,7 @@ namespace Assets._Scripts.UI
 
         public void OnAddProductClick()
         {
-            UIManager.Instance.UpdatePanels(TypeConstants.UIStates.ProductSelectionView);
+            UIManager.Instance.UpdatePanels_Deprecated(TypeConstants.UIStates.ProductSelectionView);
         }
     }
 }
